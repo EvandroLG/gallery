@@ -1,10 +1,23 @@
 {
+  "name": "gallery",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "dev:watch": "npm run dev -- --watch"
+  },
   "dependencies": {
     "@reach/router": "^1.2.1",
+    "express": "^4.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "jest": "^24.8.0"
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "jest": "^24.8.0",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.3.3"
   }
 }
