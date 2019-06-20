@@ -1,16 +1,18 @@
 {
   "name": "gallery",
   "scripts": {
-    "server": "node server.js",
+    "server": "nodemon app.js",
     "dev": "webpack --mode development",
     "dev:watch": "npm run dev -- --watch"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.0",
+    "multer": "^1.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "express": "^4.17.1",
-    "mongoose": "^5.5.15"
+    "styled-components": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
@@ -20,6 +22,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.3.3"
   }
