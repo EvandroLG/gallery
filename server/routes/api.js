@@ -18,7 +18,7 @@ const upload = multer({
   }
 });
 
-router.post('/create_post', upload.single('photo'), (req, res) => {
+router.post('/post', upload.single('photo'), (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -29,6 +29,20 @@ router.post('/create_post', upload.single('photo'), (req, res) => {
     image: file.path,
     description: req.body.description,
   }).then(() => res.send(200))
+    .catch(() => res.send(500));
+});
+
+router.get('/posts/:page', (req, res) => {
+  const limit = 2;
+  const page = Number(req.params.page);
+  const skip = (page-1) * limit;
+
+  Post.find()
+    .select('createdAt image description')
+    .limit(limit)
+    .skip(skip)
+    .sort({ createdAt: -1 })
+    .then(data => res.json(data))
     .catch(() => res.send(500));
 });
 
