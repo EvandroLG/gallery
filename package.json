@@ -3,7 +3,9 @@
   "scripts": {
     "server": "nodemon app.js",
     "dev": "webpack --mode development",
-    "dev:watch": "npm run dev -- --watch"
+    "dev:watch": "npm run dev -- --watch",
+    "format": "prettier \"{public/,server/}/**/*.{js,jsx,html}\" --write",
+    "lint": "eslint \"{public/,server/}/**/*.{js,jsx,html}\" --quiet"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
@@ -18,11 +20,15 @@
     "@babel/core": "^7.3.3",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "eslint": "^6.0.0",
+    "eslint-config-prettier": "^5.0.0",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.3.3"
   }
