@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import throttle from './throttle.js';
 
 export default function infiniteScroll(ref, callback) {
   const onScroll = () => {
@@ -12,6 +13,6 @@ export default function infiniteScroll(ref, callback) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-  });
+    window.addEventListener('scroll', throttle(onScroll, 1000));
+  }, []);
 }

@@ -11,8 +11,9 @@ const Main = styled.main`
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
+let page = 1;
+
 export default function Timeline() {
-  let page = 1;
   const url = new URL("/api/posts", location.href);
   const [posts, setPosts] = useState([]);
   const ref = useRef();
@@ -23,7 +24,7 @@ export default function Timeline() {
 
     if (!newPosts) { return; }
 
-    setPosts([...posts, ...newPosts]);
+    setPosts(prev => [...prev, ...newPosts]);
     page++;
   }
 
