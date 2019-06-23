@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { createGlobalStyle } from 'styled-components';
-import Header from './Header';
-import Timeline from './Timeline';
+import React from "react";
+import { createGlobalStyle } from "styled-components";
+import Header from "./Header";
+import Timeline from "./Timeline";
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -15,9 +15,13 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
   }
+
+  body {
+    background: #fafafa;
+  }
 `;
 
-export default () => {
+export default function App() {
   return (
     <>
       <GlobalStyle />
@@ -25,4 +29,4 @@ export default () => {
       <Timeline />
     </>
   );
-};
+}
