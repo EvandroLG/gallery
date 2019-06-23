@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const mongoose = require("mongoose");
 
-const { db, dist } = require('./server/config');
+const { db, dist, port } = require('./server/config');
 const api = require('./server/routes/api');
 
 mongoose.connect(db, {
@@ -10,7 +10,6 @@ mongoose.connect(db, {
 });
 
 const app = express();
-const port = 3000;
 
 app.use(express.static(path.join(__dirname, dist)));
 
