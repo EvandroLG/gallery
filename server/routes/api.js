@@ -1,11 +1,14 @@
-const express = require('express');
-const multer  = require('multer');
-const Post = require('../models/post');
+const path = require("path");
+const express = require("express");
+const multer = require("multer");
+
+const Post = require("../models/post");
+const { dist, uploads } = require("../config");
 
 const router = express.Router();
 
 const upload = multer({
-  dest: 'dist/uploads/',
+  dest: path.join(dist, uploads),
 
   fileFilter(req, file, callback) {
     const isValid = /image\/(png|jpe?g)$/.test(file.mimetype);
@@ -14,31 +17,34 @@ const upload = multer({
       return callback(null, true);
     }
 
-    callback(new Error('Only image files are allowed!'));
+    callback(new Error("Only image files are allowed!"));
   }
 });
 
-router.post('/post', upload.single('photo'), (req, res) => {
+router.post("/post", upload.single("photo"), (req, res) => {
   const file = req.file;
 
   if (!file) {
     res.status(400);
   }
 
+  res.send(file);
+
   Post.create({
-    image: file.path,
-    description: req.body.description,
-  }).then(() => res.send(200))
+    image: path.join(uploads, file.filename),
+    description: req.body.description
+  })
+    .then(() => res.send(200))
     .catch(() => res.send(500));
 });
 
-router.get('/posts/:page', (req, res) => {
+router.get("/posts", (req, res) => {
   const limit = 2;
-  const page = Number(req.params.page);
-  const skip = (page-1) * limit;
+  const page = Number(req.query.page || 1);
+  const skip = (page - 1) * limit;
 
   Post.find()
-    .select('createdAt image description')
+    .select("createdAt image description")
     .limit(limit)
     .skip(skip)
     .sort({ createdAt: -1 })
