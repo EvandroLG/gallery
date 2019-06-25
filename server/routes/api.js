@@ -48,7 +48,13 @@ router.get("/posts", (req, res) => {
     .limit(limit)
     .skip(skip)
     .sort({ createdAt: -1 })
-    .then(data => res.json(data))
+    .then(data => {
+      if (data.length) {
+        return res.json(data);
+      }
+
+      res.send(404);
+    })
     .catch(() => res.send(500));
 });
 
