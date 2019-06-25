@@ -11,11 +11,10 @@ const Main = styled.main`
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-let page = 1;
-
 export default function Timeline() {
   const url = new URL("/api/posts", location.href);
   const [posts, setPosts] = useState([]);
+  let [page, setPage] = useState(1);
   const ref = useRef();
 
   async function request() {
@@ -25,14 +24,13 @@ export default function Timeline() {
     if (!newPosts) { return; }
 
     setPosts(prev => [...prev, ...newPosts]);
-    page++;
+    setPage(++page);
   }
 
   useEffect(() => {
     request();
+    infiniteScroll(ref, request);
   }, []);
-
-  infiniteScroll(ref, request);
 
   return (
     <Main ref={ref}>
