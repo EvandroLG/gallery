@@ -24,8 +24,13 @@ const Image = styled.img`
 const Post = ({ image, description }) => {
   return (
     <Article>
-      <Image src={image} alt={description} />
-      <Description>{description}</Description>
+      <Image
+        src={image}
+        alt={description}
+        data-testid="image"
+      />
+
+      <Description data-testid="description">{description}</Description>
     </Article>
   );
 };

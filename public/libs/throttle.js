@@ -1,5 +1,5 @@
 export default (callback, wait) => {
-  let wasCalled = false; 
+  let wasCalled = false;
 
   return () => {
     if (!wasCalled) {

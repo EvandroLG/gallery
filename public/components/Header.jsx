@@ -7,6 +7,10 @@ const MainHeader = styled.div`
   height: 75px;
 `;
 
+MainHeader.defaultProps = {
+  ['data-testid']: 'header'
+};
+
 export default function Header() {
   return (
     <MainHeader>

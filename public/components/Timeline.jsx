@@ -11,6 +11,10 @@ const Main = styled.main`
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
+Main.defaultProps = {
+  ['data-testid']: 'timeline'
+};
+
 export default function Timeline() {
   const url = new URL("/api/posts", location.href);
   const [posts, setPosts] = useState([]);

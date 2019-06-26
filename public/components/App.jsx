@@ -23,10 +23,10 @@ const GlobalStyle = createGlobalStyle`
 
 export default function App() {
   return (
-    <>
+    <React.Fragment>
       <GlobalStyle />
       <Header />
       <Timeline />
-    </>
+    </React.Fragment>
   );
 }
