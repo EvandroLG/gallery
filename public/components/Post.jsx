@@ -10,6 +10,10 @@ const Article = styled.article`
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.0975);
   border-radius: 5px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
 const Description = styled.section`

@@ -1,7 +1,9 @@
 import React from "react";
+import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import Timeline from "./Timeline";
+import NewPost from './NewPost';
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -19,14 +21,28 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: #fafafa;
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default function App() {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <Header />
-      <Timeline />
+      <BrowserRouter>
+        <Header />
+        <Route
+          exact
+          path='/'
+          component={Timeline}
+        />
+        <Route
+          path='/new_post'
+          component={NewPost}
+        />
+      </BrowserRouter>
     </React.Fragment>
   );
 }
