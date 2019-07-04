@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import http from '../libs/http';
 
 export default function NewPost() {
   const [description, setDescription] = useState('');
@@ -7,6 +8,12 @@ export default function NewPost() {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const data = new FormData();
+    data.append('photo', inputImage.current.files[0]);
+    data.append('description', inputDescription.current.value);
+
+    http.post('/api/post', data);
   }
 
   return (
