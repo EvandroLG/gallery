@@ -1,19 +1,24 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from "prop-types";
 import http from '../libs/http';
 
-export default function NewPost() {
+const NewPost = ({ history }) => {
   const [description, setDescription] = useState('');
   const inputImage = useRef(null);
   const inputDescription = useRef(null);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const data = new FormData();
     data.append('photo', inputImage.current.files[0]);
     data.append('description', inputDescription.current.value);
 
-    http.post('/api/post', data);
+    const result = await http.post('/api/post', data);
+
+    if (result.ok) {
+      history.push('/');
+    }
   }
 
   return (
@@ -47,3 +52,9 @@ export default function NewPost() {
     </>
   );
 }
+
+NewPost.propTypes = {
+  history: PropTypes.object
+};
+
+export default NewPost;

@@ -28,8 +28,6 @@ router.post("/post", upload.single("photo"), (req, res) => {
     res.status(400);
   }
 
-  res.send(file);
-
   Post.create({
     image: path.join(uploads, file.filename),
     description: req.body.description

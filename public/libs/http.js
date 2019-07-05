@@ -9,8 +9,6 @@ export default {
     return fetch(url, {
       method: 'POST',
       body: data,
-    })
-      .then(response => response.json())
-      .catch(console.error);
+    });
   }
 };
