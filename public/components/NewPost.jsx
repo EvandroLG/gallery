@@ -1,6 +1,26 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+import { FormGroup, Label, Textarea, SubmitButton } from './Form';
 import http from '../libs/http';
+
+const Main = styled.main`
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.0975);
+  border-radius: 5px;
+`;
+
+const Title = styled.h1`
+  font-size: 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+`;
 
 const NewPost = ({ history }) => {
   const [description, setDescription] = useState('');
@@ -22,34 +42,35 @@ const NewPost = ({ history }) => {
   }
 
   return (
-    <>
-      <h1>New Post</h1>
+    <Main>
+      <Title>New Post</Title>
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="image">
-          Image
+        <FormGroup>
           <input
             ref={inputImage}
             id="image"
             type="file"
           />
-        </label>
+        </FormGroup>
 
-        <label htmlFor="description">
-          <textarea
+        <FormGroup>
+          <Label htmlFor="description">
+            Description
+          </Label>
+          <Textarea
             ref={inputDescription}
             id="description"
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-        </label>
+        </FormGroup>
 
-        <input
-          type="submit"
+        <SubmitButton
           value="Submit"
         />
       </form>
-    </>
+    </Main>
   );
 }
 

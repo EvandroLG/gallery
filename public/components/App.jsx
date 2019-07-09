@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
+    border: 0;
   }
 
   body {
@@ -29,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 
 export default function App() {
   return (
-    <React.Fragment>
+    <>
       <GlobalStyle />
       <BrowserRouter>
         <Header />
@@ -43,6 +44,6 @@ export default function App() {
           component={NewPost}
         />
       </BrowserRouter>
-    </React.Fragment>
+    </>
   );
 }
