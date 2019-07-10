@@ -43,10 +43,7 @@ const NewPost = ({ history }) => {
   }
 
   function onChangeFile(e) {
-    const acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const type = e.target.files[0].type;
-
-    setIsValid(acceptedTypes.includes(type));
+    setIsValid(!!e.target.value);
   }
 
   return (
@@ -59,6 +56,7 @@ const NewPost = ({ history }) => {
             ref={inputImage}
             id="image"
             type="file"
+            accept="image/x-png,image/gif,image/jpeg"
             onChange={onChangeFile}
           />
         </FormGroup>
