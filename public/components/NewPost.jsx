@@ -24,6 +24,7 @@ const Title = styled.h1`
 
 const NewPost = ({ history }) => {
   const [description, setDescription] = useState('');
+  const [isValid, setIsValid] = useState(false);
   const inputImage = useRef(null);
   const inputDescription = useRef(null);
 
@@ -41,6 +42,13 @@ const NewPost = ({ history }) => {
     }
   }
 
+  function onChangeFile(e) {
+    const acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const type = e.target.files[0].type;
+
+    setIsValid(acceptedTypes.includes(type));
+  }
+
   return (
     <Main>
       <Title>New Post</Title>
@@ -51,6 +59,7 @@ const NewPost = ({ history }) => {
             ref={inputImage}
             id="image"
             type="file"
+            onChange={onChangeFile}
           />
         </FormGroup>
 
@@ -68,6 +77,7 @@ const NewPost = ({ history }) => {
 
         <SubmitButton
           value="Submit"
+          disabled={!isValid}
         />
       </form>
     </Main>

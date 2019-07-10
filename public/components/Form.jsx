@@ -29,4 +29,9 @@ export const SubmitButton = styled.input.attrs({ type: 'submit' })`
   &:hover {
     background: rgba(0, 0, 0, 0.7);
   }
+
+  &:disabled {
+    background: rgba(0, 0, 0, 0.7);
+    cursor: default;
+  }
 `;
