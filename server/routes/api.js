@@ -77,8 +77,37 @@ router.post('/signup', async (req, res) => {
 
     return res.status(201).send({ token });
   } catch(e) {
-    console.error(e);
     return res.status(400).end();
+  }
+});
+
+router.post('/sigin', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      username: req.body.username,
+    })
+      .select('username password')
+      .exec();
+
+    if (!user) {
+      return res.status(401).send({
+        message: 'Invalid username',
+      });
+    }
+
+    const isPasswordValid = await user.checkPassword(req.body.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).send({
+        message: 'Invalid password',
+      });
+    }
+
+    return res.status(201).send({
+      token: createToken(user),
+    });
+  } catch(e) {
+    res.status(500).end();
   }
 });
 
