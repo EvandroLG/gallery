@@ -1,9 +1,11 @@
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const jwt = require('jsonwebtoken');
 
 const Post = require("../models/post");
-const { dist, uploads } = require("../config");
+const User = require('../models/user');
+const { dist, uploads, secrets } = require("../config");
 
 const router = express.Router();
 
@@ -20,6 +22,12 @@ const upload = multer({
     callback(new Error("Only image files are allowed!"));
   }
 });
+
+const createToken = user => {
+  return jwt.sign({ id: user.id }, secrets.jwt, {
+    expiresIn: secrets.jwtExp,
+  });
+};
 
 router.post("/post", upload.single("photo"), (req, res) => {
   const file = req.file;
@@ -54,6 +62,24 @@ router.get("/posts", (req, res) => {
       res.send(404);
     })
     .catch(() => res.send(500));
+});
+
+router.post('/signup', async (req, res) => {
+  if (!req.body.email || !req.body.username || !req.body.password) {
+    return res.status(400).send({
+      message: 'Email, username and password are required',
+    });
+  }
+
+  try {
+    const user = await User.create(req.body);
+    const token = createToken(user);
+
+    return res.status(201).send({ token });
+  } catch(e) {
+    console.error(e);
+    return res.status(400).end();
+  }
 });
 
 module.exports = router;
