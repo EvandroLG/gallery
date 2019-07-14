@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 
 const { db, dist, port } = require('./server/config');
-const api = require('./server/routes/api');
+const routes = require('./server/routes');
 
 mongoose.connect(db, {
   useNewUrlParser: true
@@ -11,7 +11,7 @@ mongoose.connect(db, {
 
 const app = express();
 
-app.use('/api', api);
+app.use('/api', routes);
 
 app.use(express.static(path.join(__dirname, dist)));
 
