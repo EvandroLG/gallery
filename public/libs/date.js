@@ -6,7 +6,7 @@ export const fromUtcToLocalTime = date => {
   const hours = date.getHours();
   newDate.setHours(hours - offset);
 
-  return newDate;   
+  return newDate;
 };
 
 export const formatfromNow = date => {
