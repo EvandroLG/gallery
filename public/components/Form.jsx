@@ -17,9 +17,15 @@ export const Textarea = styled.textarea`
   border: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
+export const Input = styled.input`
+  width: 100%;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.0975);
+`;
+
 export const SubmitButton = styled.input.attrs({ type: 'submit' })`
   cursor: pointer;
-  padding: 15px; 
+  padding: 15px;
   background: #000;
   color: #fff;
   font-size: 15px;

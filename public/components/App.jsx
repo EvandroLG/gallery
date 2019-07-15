@@ -4,6 +4,7 @@ import { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import Timeline from "./Timeline";
 import NewPost from './NewPost';
+import Signup from './Signup';
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -42,6 +43,10 @@ export default function App() {
         <Route
           path='/new_post'
           component={NewPost}
+        />
+        <Route
+          path='/signup'
+          component={Signup}
         />
       </BrowserRouter>
     </>
