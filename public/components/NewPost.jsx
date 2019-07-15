@@ -2,7 +2,13 @@ import React, { useState, useRef } from 'react';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { FormGroup, Label, Textarea, SubmitButton } from './Form';
+import {
+  FormGroup,
+  Label,
+  Textarea,
+  SubmitButton
+} from './Form';
+
 import http from '../libs/http';
 
 const Main = styled.main`
