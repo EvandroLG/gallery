@@ -43,13 +43,13 @@ const Post = ({ image, description, createdAt }) => {
         data-testid="image"
       />
 
-    <Description data-testid="description">
-      {description}
-    </Description>
+      <Description data-testid="description">
+        {description}
+      </Description>
 
-    <time dateTime={createdAt}>
-      {formatDate()}
-    </time>
+      <time dateTime={createdAt}>
+        {formatDate()}
+      </time>
     </Article>
   );
 };
