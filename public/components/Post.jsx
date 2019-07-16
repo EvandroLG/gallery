@@ -21,7 +21,16 @@ const Article = styled.article`
 `;
 
 const Description = styled.section`
-  padding: 15px 15px 0;
+  padding-top: 15px;
+`;
+
+const Time = styled.time`
+  padding-top: 5px;
+  color: #999;
+`;
+
+const DescriptionWrapper = styled.div`
+  padding-left: 15px;
 `;
 
 const Image = styled.img`
@@ -43,13 +52,15 @@ const Post = ({ image, description, createdAt }) => {
         data-testid="image"
       />
 
-      <Description data-testid="description">
-        {description}
-      </Description>
+      <DescriptionWrapper>
+        <Description data-testid="description">
+          {description}
+        </Description>
 
-      <time dateTime={createdAt}>
-        {formatDate()}
-      </time>
+        <Time dateTime={createdAt}>
+          {formatDate()}
+        </Time>
+      </DescriptionWrapper>
     </Article>
   );
 };
