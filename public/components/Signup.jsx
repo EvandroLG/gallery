@@ -20,6 +20,7 @@ const Main = styled.main`
 `;
 
 const Signup = () => {
+  const [ isValid, setIsValid ] = useState(false);
   const [ email, setEmail ] = useState('');
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -27,16 +28,37 @@ const Signup = () => {
   const inputUsername = useRef(null);
   const inputPassword = useRef(null);
 
+  function getInputValues() {
+    const { value: email } = inputEmail.current;
+    const { value: username } = inputUsername.current;
+    const { value: password } = inputPassword.current;
+
+    return {
+      email,
+      username,
+      password,
+    };
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
+    const { email, username, password } = getInputValues();
 
     const result = await http.post('/api/signup', {
-      email: inputEmail.current.value,
-      username: inputUsername.current.value,
-      password: inputPassword.current.value,
+      email,
+      username,
+      password,
     });
 
     debugger;
+  }
+
+  function handleChange(e, setValue) {
+    const { value } = e.target;
+    setValue(value);
+
+    const { email, username, password } = getInputValues();
+    setIsValid(email && username && password);
   }
 
   return (
@@ -49,7 +71,7 @@ const Signup = () => {
             ref={inputEmail}
             id="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={ e => handleChange(e, setEmail) }
           />
         </FormGroup>
 
@@ -60,7 +82,7 @@ const Signup = () => {
             ref={inputUsername}
             id="username"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={ e => handleChange(e, setUsername) }
           />
         </FormGroup>
 
@@ -71,12 +93,13 @@ const Signup = () => {
             ref={inputPassword}
             id="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={ e => handleChange(e, setPassword) }
           />
         </FormGroup>
 
         <SubmitButton
           value="Sign up"
+          disabled={!isValid}
         />
       </form>
     </Main>
