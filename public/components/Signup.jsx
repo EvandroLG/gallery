@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import MainContent from './MainContent';
 import http from '../libs/http';
 
 import {
@@ -8,16 +8,6 @@ import {
   SubmitButton,
   Input,
 } from './Form';
-
-const Main = styled.main`
-  width: 95%;
-  margin: 0 auto;
-  margin-top: 40px;
-  padding: 15px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.0975);
-  border-radius: 5px;
-`;
 
 const Signup = () => {
   const [ isValid, setIsValid ] = useState(false);
@@ -62,7 +52,7 @@ const Signup = () => {
   }
 
   return (
-    <Main>
+    <MainContent>
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="email">E-mail</Label>
@@ -102,7 +92,7 @@ const Signup = () => {
           disabled={!isValid}
         />
       </form>
-    </Main>
+    </MainContent>
   );
 }
 
