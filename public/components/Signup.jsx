@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import http from '../libs/http';
 
 import {
   FormGroup,
@@ -19,7 +20,6 @@ const Main = styled.main`
 `;
 
 const Signup = () => {
-  const [ isValid, setIsValid ] = useState(false);
   const [ email, setEmail ] = useState('');
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -27,8 +27,16 @@ const Signup = () => {
   const inputUsername = useRef(null);
   const inputPassword = useRef(null);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    const result = await http.post('/api/signup', {
+      email: inputEmail.current.value,
+      username: inputUsername.current.value,
+      password: inputPassword.current.value,
+    });
+
+    debugger;
   }
 
   return (
@@ -69,7 +77,6 @@ const Signup = () => {
 
         <SubmitButton
           value="Sign up"
-          disabled={!isValid}
         />
       </form>
     </Main>
