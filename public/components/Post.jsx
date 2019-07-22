@@ -27,6 +27,7 @@ const Description = styled.section`
 const Time = styled.time`
   padding-top: 5px;
   color: #999;
+  font-size: 0.9rem;
 `;
 
 const DescriptionWrapper = styled.div`
