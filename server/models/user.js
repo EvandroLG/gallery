@@ -39,7 +39,7 @@ User.pre('save', function (next) {
   });
 });
 
-User.methods.checkPassword = () => {
+User.methods.checkPassword =  function(password) {
   const passwordHash = this.password;
 
   return new Promise((resolve, reject) => {
