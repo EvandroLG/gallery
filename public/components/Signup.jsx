@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import PropTypes from "prop-types";
 import MainContent from './MainContent';
 import http from '../libs/http';
 
@@ -9,7 +10,7 @@ import {
   Input,
 } from './Form';
 
-const Signup = () => {
+const Signup = ({ history }) => {
   const [ isValid, setIsValid ] = useState(false);
   const [ email, setEmail ] = useState('');
   const [ username, setUsername ] = useState('');
@@ -40,7 +41,11 @@ const Signup = () => {
       password,
     });
 
-    debugger;
+    if (result.ok) {
+      const { token } = await result.json();
+      localStorage.setItem('jwt_token', token);
+      history.push('/');
+    }
   }
 
   function handleChange(e, setValue) {
@@ -95,5 +100,9 @@ const Signup = () => {
     </MainContent>
   );
 }
+
+Signup.propTypes = {
+  history: PropTypes.object
+};
 
 export default Signup;
