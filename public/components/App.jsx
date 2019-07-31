@@ -5,6 +5,7 @@ import Header from "./Header";
 import Timeline from "./Timeline";
 import NewPost from './NewPost';
 import Signup from './Signup';
+import Login from './Login';
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -47,6 +48,10 @@ export default function App() {
         <Route
           path='/signup'
           component={Signup}
+        />
+        <Route
+          path='/login'
+          component={Login}
         />
       </BrowserRouter>
     </>
