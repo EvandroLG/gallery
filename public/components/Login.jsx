@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from "prop-types";
 import MainContent from './MainContent';
 
@@ -16,13 +16,34 @@ const Login = ({ history }) => {
   const inputEmailOrUsername = useRef(null);
   const inputPassword = useRef(null);
 
+  function checkIfFormIsValid() {
+    const { emailOrUsername, password } = getInputValues();
+    setIsValid(emailOrUsername && password);
+  }
+
+  useEffect(() => {
+    checkIfFormIsValid();
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
   }
 
+  function getInputValues() {
+    const { value: emailOrUsername } = inputEmailOrUsername.current;
+    const { value: password } = inputPassword.current;
+
+    return {
+      emailOrUsername,
+      password,
+    };
+  }
+
   function handleChange(e, setValue) {
     const { value } = e.target;
+
     setValue(value);
+    checkIfFormIsValid();
   }
 
   return (
