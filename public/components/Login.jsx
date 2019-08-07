@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import MainContent from './MainContent';
+import http from '../libs/http';
 
 import {
   FormGroup,
@@ -25,10 +26,6 @@ const Login = ({ history }) => {
     checkIfFormIsValid();
   }, []);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-  }
-
   function getInputValues() {
     const { value: emailOrUsername } = inputEmailOrUsername.current;
     const { value: password } = inputPassword.current;
@@ -37,6 +34,22 @@ const Login = ({ history }) => {
       emailOrUsername,
       password,
     };
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const { emailOrUsername, password } = getInputValues();
+
+    const result = await http.post('/api/signin', {
+      username: emailOrUsername,
+      password,
+    });
+
+    if (result.ok) {
+      const { token } = await result.json();
+      localStorage.setItem('jwt_token', token);
+      history.push('/');
+    }
   }
 
   function handleChange(e, setValue) {
