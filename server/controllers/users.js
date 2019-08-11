@@ -55,7 +55,16 @@ const signupUser = async (req, res) => {
   }
 };
 
+const auth = (req, res) => {
+  const { user } = req;
+
+  return res.send({
+    user,
+  });
+};
+
 module.exports = {
   signinUser,
   signupUser,
+  auth,
 };

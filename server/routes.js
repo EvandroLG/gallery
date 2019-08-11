@@ -3,7 +3,7 @@ const express = require('express');
 const multer = require('multer');
 
 const { getPosts, createPost } = require('./controllers/posts');
-const { signinUser, signupUser } = require('./controllers/users');
+const { signinUser, signupUser, auth } = require('./controllers/users');
 const { isAuthorized } = require('./middlewares/auth');
 const { dist, uploads } = require('./config');
 
@@ -27,5 +27,6 @@ router.get('/posts', isAuthorized, getPosts);
 router.post('/post', [isAuthorized, upload.single('photo')], createPost);
 router.post('/signin', signinUser);
 router.post('/signup', signupUser);
+router.get('/auth', isAuthorized, auth);
 
 module.exports = router;

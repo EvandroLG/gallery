@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import MainContent from './MainContent';
@@ -10,7 +11,8 @@ import {
   SubmitButton
 } from './Form';
 
-import http from '../libs/http';
+import http from "../libs/http";
+import statusCode from '../status';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -20,10 +22,27 @@ const Title = styled.h1`
 `;
 
 const NewPost = ({ history }) => {
-  const [description, setDescription] = useState('');
-  const [isValid, setIsValid] = useState(false);
+  const [ description, setDescription ] = useState('');
+  const [ isValid, setIsValid ] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const inputImage = useRef(null);
   const inputDescription = useRef(null);
+
+  async function verifyAuthentication() {
+    try {
+      await http.get('/api/auth', {
+        authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      });
+    } catch(e) {
+        if (e.status === statusCode.UNAUTHORIZED) {
+          setIsAuthorized(false);
+        }
+    }
+  }
+
+  useEffect(() => {
+    verifyAuthentication();
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -40,7 +59,11 @@ const NewPost = ({ history }) => {
   }
 
   function onChangeFile(e) {
-    setIsValid(!!e.target.value);
+    setIsValid(Boolean(e.target.value));
+  }
+
+  if (!isAuthorized) {
+    return <Redirect to='/login' />;
   }
 
   return (
