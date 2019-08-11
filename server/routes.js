@@ -4,6 +4,7 @@ const multer = require('multer');
 
 const { getPosts, createPost } = require('./controllers/posts');
 const { signinUser, signupUser } = require('./controllers/users');
+const { isAuthorized } = require('./middlewares/auth');
 const { dist, uploads } = require('./config');
 
 const router = express.Router();
@@ -22,8 +23,8 @@ const upload = multer({
   }
 });
 
-router.get('/posts', getPosts);
-router.post('/post', upload.single('photo'), createPost);
+router.get('/posts', isAuthorized, getPosts);
+router.post('/post', [isAuthorized, upload.single('photo')], createPost);
 router.post('/signin', signinUser);
 router.post('/signup', signupUser);
 

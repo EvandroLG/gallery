@@ -3,9 +3,7 @@ export default {
     return fetch(url, {
       headers,
     })
-      .then(response => {
-        response.json();
-      })
+      .then(response => response.json())
       .catch(console.error);
   },
 
