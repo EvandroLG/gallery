@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 
 const { db, dist, port } = require('./server/config');
+const { isAuthorized } = require('./server/middlewares/auth');
 const routes = require('./server/routes');
 
 mongoose.connect(db, {
@@ -13,7 +14,7 @@ mongoose.connect(db, {
 const app = express();
 app.use(bodyParser.json());
 
-app.use('/api', routes);
+app.use('/api', isAuthorized, routes);
 app.use(express.static(path.join(__dirname, dist)));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, dist, 'index.html'));
