@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
+import Post from "./Post";
+
 import http from "../libs/http";
 import infiniteScroll from '../libs/infinite-scroll';
-import Post from "./Post";
+import { UNAUTHORIZED } from '../status';
 
 const Main = styled.main`
   width: 95%;
@@ -17,20 +20,26 @@ Main.defaultProps = {
 
 export default function Timeline() {
   const url = new URL("/api/posts", location.href);
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const [posts, setPosts] = useState([]);
   let [page, setPage] = useState(1);
   const ref = useRef();
 
   async function request() {
     url.searchParams.set('page', page);
-    const newPosts = await http.get(url, {
-      authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-    });
 
-    if (!newPosts) { return; }
+    try {
+      const newPosts = await http.get(url, {
+        authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      });
 
-    setPosts(prev => [...prev, ...newPosts]);
-    setPage(++page);
+      setPosts(prev => [...prev, ...newPosts]);
+      setPage(++page);
+    } catch(e) {
+      if (e.status === UNAUTHORIZED) {
+        setIsAuthorized(false);
+      }
+    }
   }
 
   useEffect(() => {
@@ -39,10 +48,13 @@ export default function Timeline() {
   }, []);
 
   return (
-    <Main ref={ref}>
-      {posts.map((post, key) => (
-        <Post key={key} {...post} />
-      ))}
-    </Main>
+    isAuthorized ?
+      <Main ref={ref}>
+        {posts.map((post, key) => (
+          <Post key={key} {...post} />
+        ))}
+      </Main>
+    :
+      <Redirect to='/login' />
   );
 }

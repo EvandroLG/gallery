@@ -3,8 +3,13 @@ export default {
     return fetch(url, {
       headers,
     })
-      .then(response => response.json())
-      .catch(console.error);
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw response;
+      });
   },
 
   post(url, data) {
