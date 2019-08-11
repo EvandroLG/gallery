@@ -2,27 +2,29 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { secrets } = require("../config");
 
+const UNAUTHORIZED = 401;
+
 const verifyToken = token => {
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     jwt.verify(token, secrets.jwt, (err, payload) => {
       if (err) {
         return reject(err);
       }
 
-      resolve(payload);
+      return resolve(payload);
     });
   });
 };
 
 const isAuthorized = async (req, res, next) => {
   if (!req.headers.authorization) {
-    return res.status(401).end();
+    return res.status(UNAUTHORIZED).end();
   }
 
   let token = req.headers.authorization.split('Bearer ')[1];
 
   if (!token) {
-    return res.status(401).end();
+    return res.status(UNAUTHORIZED).end();
   }
 
   try {
@@ -34,7 +36,7 @@ const isAuthorized = async (req, res, next) => {
     req.user = user.toJSON();
     next();
   } catch(e) {
-    return res.status(401).end();
+    return res.status(UNAUTHORIZED).end();
   }
 };
 
