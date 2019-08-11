@@ -5,7 +5,7 @@ import Post from "./Post";
 
 import http from "../libs/http";
 import infiniteScroll from '../libs/infinite-scroll';
-import { UNAUTHORIZED } from '../status';
+import statusCode from '../status';
 
 const Main = styled.main`
   width: 95%;
@@ -36,7 +36,7 @@ export default function Timeline() {
       setPosts(prev => [...prev, ...newPosts]);
       setPage(++page);
     } catch(e) {
-      if (e.status === UNAUTHORIZED) {
+      if (e.status === statusCode.UNAUTHORIZED) {
         setIsAuthorized(false);
       }
     }
