@@ -12,7 +12,7 @@ const Main = styled.main`
 `;
 
 Main.defaultProps = {
-  ['data-testid']: 'timeline'
+  ['data-testid']: 'timeline',
 };
 
 export default function Timeline() {
@@ -23,7 +23,9 @@ export default function Timeline() {
 
   async function request() {
     url.searchParams.set('page', page);
-    const newPosts = await http.get(url);
+    const newPosts = await http.get(url, {
+      authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+    });
 
     if (!newPosts) { return; }
 

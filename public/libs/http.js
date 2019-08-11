@@ -1,7 +1,12 @@
 export default {
-  get(url) {
-    return fetch(url)
-      .then(response => response.json())
+  get(url, headers = {}) {
+    return fetch(url, {
+      headers,
+    })
+      .then(response => {
+        console.log(response.status);
+        response.json();
+      })
       .catch(console.error);
   },
 
