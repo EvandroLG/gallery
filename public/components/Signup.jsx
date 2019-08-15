@@ -99,7 +99,7 @@ const Signup = ({ history }) => {
       </form>
     </MainContent>
   );
-}
+};
 
 Signup.propTypes = {
   history: PropTypes.object
