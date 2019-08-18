@@ -1,8 +1,14 @@
+import { AUTHENTICATION_UPDATE } from '../actions/user';
+
 const defaultState = {
-    isLogged: false,
-    nickname: null,
+  isLogged: false,
+  username: null,
 };
 
 export default (prevState = defaultState, action) => {
-    return prevState;
+  if (action.type === AUTHENTICATION_UPDATE) {
+    return { ...action.payload };
+  }
+
+  return prevState;
 };

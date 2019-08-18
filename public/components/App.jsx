@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import Timeline from "./Timeline";
-import NewPost from './NewPost';
+import NewPostContainer from '../containers/NewPostContainer';
 import Signup from './Signup';
 import Login from './Login';
 
@@ -43,7 +43,7 @@ export default function App() {
         />
         <Route
           path='/new_post'
-          component={NewPost}
+          component={NewPostContainer}
         />
         <Route
           path='/signup'

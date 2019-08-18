@@ -12,7 +12,6 @@ import {
 } from './Form';
 
 import http from "../libs/http";
-import statusCode from '../status';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -21,28 +20,12 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const NewPost = ({ history }) => {
+const NewPost = ({ history, isLogged }) => {
   const [ description, setDescription ] = useState('');
   const [ isValid, setIsValid ] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(true);
+  const [ isAuthorized, setIsAuthorized ] = useState(isLogged);
   const inputImage = useRef(null);
   const inputDescription = useRef(null);
-
-  async function verifyAuthentication() {
-    try {
-      await http.get('/api/auth', {
-        authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-      });
-    } catch(e) {
-        if (e.status === statusCode.UNAUTHORIZED) {
-          setIsAuthorized(false);
-        }
-    }
-  }
-
-  useEffect(() => {
-    verifyAuthentication();
-  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -103,7 +86,8 @@ const NewPost = ({ history }) => {
 }
 
 NewPost.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  isLogged: PropTypes.bool,
 };
 
 export default NewPost;

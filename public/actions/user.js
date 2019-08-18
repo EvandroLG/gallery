@@ -1,6 +1,13 @@
 import http from "../libs/http";
 
-export const USER_UPDATE = 'USER_UPDATE';
+export const AUTHENTICATION_UPDATE = 'AUTHENTICATION_UPDATE';
+
+const getAuthenticationUpdate = (data) => {
+  return {
+    type: AUTHENTICATION_UPDATE,
+    payload: data,
+  };
+};
 
 export const fetchAuthentication = () => {
   return async (dispatch) => {
@@ -9,12 +16,19 @@ export const fetchAuthentication = () => {
         authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
       });
 
-      dispatch(data);
+      dispatch(
+        getAuthenticationUpdate({
+          isLogged: true,
+          username: data.username,
+        })
+      );
     } catch {
-      dispatch({
-        isLogged: false,
-        nickname: null,
-      });
+      dispatch(
+        getAuthenticationUpdate({
+          isLogged: false,
+          username: null,
+        })
+      );
     }
   };
 };
