@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle } from "styled-components";
 import Header from "./Header";
+import Private from './Private';
 import Timeline from "./Timeline";
-import NewPostContainer from '../containers/NewPostContainer';
+import NewPost from './NewPost';
 import Signup from './Signup';
 import Login from './Login';
 
@@ -39,11 +40,15 @@ export default function App() {
         <Route
           exact
           path='/'
-          component={Timeline}
+          render={props =>
+            <Private { ...props } Component={Timeline} />
+          }
         />
         <Route
           path='/new_post'
-          component={NewPostContainer}
+          render={props =>
+            <Private { ...props } Component={NewPost} />
+          }
         />
         <Route
           path='/signup'
