@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import MainContent from './MainContent';
+import status from '../status';
 
 import {
   FormGroup,
@@ -20,10 +21,9 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const NewPost = ({ history, isLogged }) => {
+const NewPost = ({ history }) => {
   const [ description, setDescription ] = useState('');
   const [ isValid, setIsValid ] = useState(false);
-  const [ isAuthorized, setIsAuthorized ] = useState(isLogged);
   const inputImage = useRef(null);
   const inputDescription = useRef(null);
 
@@ -38,15 +38,13 @@ const NewPost = ({ history, isLogged }) => {
 
     if (result.ok) {
       history.push('/');
+    } else if (result.status === status.UNAUTHORIZED) {
+      return <Redirect to='/login' />;
     }
   }
 
   function onChangeFile(e) {
     setIsValid(Boolean(e.target.value));
-  }
-
-  if (!isAuthorized) {
-    return <Redirect to='/login' />;
   }
 
   return (
@@ -87,7 +85,6 @@ const NewPost = ({ history, isLogged }) => {
 
 NewPost.propTypes = {
   history: PropTypes.object,
-  isLogged: PropTypes.bool,
 };
 
 export default NewPost;
