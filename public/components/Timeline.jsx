@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
 import Post from "./Post";
 
-import http from "../libs/http";
+import { get } from "../libs/http";
 import infiniteScroll from '../libs/infinite-scroll';
 import statusCode from '../status';
 
@@ -19,7 +19,7 @@ Main.defaultProps = {
 };
 
 export default function Timeline() {
-  const url = new URL("/api/posts", location.href);
+  const url = new URL('/api/posts', location.href);
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [posts, setPosts] = useState([]);
   let [page, setPage] = useState(1);
@@ -29,8 +29,8 @@ export default function Timeline() {
     url.searchParams.set('page', page);
 
     try {
-      const newPosts = await http.get(url, {
-        authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      const newPosts = await get(url, {
+        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
       });
 
       setPosts(prev => [...prev, ...newPosts]);

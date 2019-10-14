@@ -12,7 +12,7 @@ import {
   SubmitButton
 } from './Form';
 
-import http from "../libs/http";
+import { post } from "../libs/http";
 
 const Title = styled.h1`
   font-size: 25px;
@@ -34,7 +34,9 @@ const NewPost = ({ history }) => {
     data.append('photo', inputImage.current.files[0]);
     data.append('description', inputDescription.current.value);
 
-    const result = await http.post('/api/post', data);
+    const result = await post('/api/post', data, {
+      authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+    });
 
     if (result.ok) {
       history.push('/');

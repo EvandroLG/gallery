@@ -1,4 +1,4 @@
-import http from "../libs/http";
+import { get } from "../libs/http";
 
 export const AUTHENTICATION_UPDATE = 'AUTHENTICATION_UPDATE';
 
@@ -12,8 +12,9 @@ const getAuthenticationUpdate = (data) => {
 export const fetchAuthentication = () => {
   return async (dispatch) => {
     try {
-      const data = await http.get('/api/auth', {
-        authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      const data = await get('/api/auth', {
+        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+        'Content-Type': 'application/json',
       });
 
       dispatch(

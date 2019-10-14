@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import MainContent from './MainContent';
-import http from '../libs/http';
+import { post } from '../libs/http';
 
 import {
   FormGroup,
@@ -40,9 +40,11 @@ const Login = ({ history }) => {
     e.preventDefault();
     const { emailOrUsername, password } = getInputValues();
 
-    const result = await http.post('/api/signin', {
+    const result = await post('/api/signin', JSON.stringify({
       username: emailOrUsername,
       password,
+    }), {
+        'Content-Type': 'application/json',
     });
 
     if (result.ok) {
