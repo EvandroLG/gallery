@@ -12,7 +12,7 @@ import {
   SubmitButton
 } from './Form';
 
-import { post } from "../libs/http";
+import { post, authorizationHeader } from "../libs/http";
 
 const Title = styled.h1`
   font-size: 25px;
@@ -35,7 +35,7 @@ const NewPost = ({ history }) => {
     data.append('description', inputDescription.current.value);
 
     const result = await post('/api/post', data, {
-      authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      ...authorizationHeader,
     });
 
     if (result.ok) {

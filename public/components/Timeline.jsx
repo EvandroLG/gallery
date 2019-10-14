@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
 import Post from "./Post";
 
-import { get } from "../libs/http";
+import { get, authorizationHeader } from "../libs/http";
 import infiniteScroll from '../libs/infinite-scroll';
 import statusCode from '../status';
 
@@ -30,7 +30,7 @@ export default function Timeline() {
 
     try {
       const newPosts = await get(url, {
-        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+        ...authorizationHeader,
       });
 
       setPosts(prev => [...prev, ...newPosts]);

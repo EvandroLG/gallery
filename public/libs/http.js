@@ -1,3 +1,7 @@
+export const authorizationHeader = {
+  'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+};
+
 export const get = (url, headers = {}) => {
   return fetch(url, {
     headers,
