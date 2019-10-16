@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import MainContent from './MainContent';
-import { post } from '../libs/http';
+import { postWithRedirect } from '../libs/http';
 
 import {
   FormGroup,
@@ -33,21 +33,7 @@ const Signup = ({ history }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const { email, username, password } = getInputValues();
-
-    const result = await post('/api/signup', JSON.stringify({
-      email,
-      username,
-      password,
-    }), {
-        'Content-Type': 'application/json',
-    });
-
-    if (result.ok) {
-      const { token } = await result.json();
-      localStorage.setItem('jwt_token', token);
-      history.push('/');
-    }
+    postWithRedirect('/api/signup', getInputValues(), history);
   }
 
   function handleChange(e, setValue) {

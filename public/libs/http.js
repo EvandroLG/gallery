@@ -22,3 +22,15 @@ export const post = (url, data, headers = {}) => {
     body: data,
   });
 };
+
+export const postWithRedirect = async (url, data, history) => {
+  const result = await post(url, JSON.stringify(data), {
+    'Content-Type': 'application/json',
+  });
+
+  if (result.ok) {
+    const { token } = await result.json();
+    localStorage.setItem('jwt_token', token);
+    history.push('/');
+  }
+};
