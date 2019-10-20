@@ -8,7 +8,7 @@ export default (callback) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    callback();
+    callback(state);
   };
 
   return [

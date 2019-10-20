@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import MainContent from './MainContent';
+import useForm from '../hooks/useForm';
 import { postWithRedirect } from '../libs/http';
 
 import {
@@ -11,38 +12,16 @@ import {
 } from './Form';
 
 const Signup = ({ history }) => {
-  const [ isValid, setIsValid ] = useState(false);
-  const [ email, setEmail ] = useState('');
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const inputEmail = useRef(null);
-  const inputUsername = useRef(null);
-  const inputPassword = useRef(null);
+  const register = async (data) => {
+    await postWithRedirect('/api/signup', data, history);
+  };
 
-  function getInputValues() {
-    const { value: email } = inputEmail.current;
-    const { value: username } = inputUsername.current;
-    const { value: password } = inputPassword.current;
-
-    return {
-      email,
-      username,
-      password,
-    };
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    postWithRedirect('/api/signup', getInputValues(), history);
-  }
-
-  function handleChange(e, setValue) {
-    const { value } = e.target;
-    setValue(value);
-
-    const { email, username, password } = getInputValues();
-    setIsValid(email && username && password);
-  }
+  const [
+    fields,
+    getInputValue,
+    handleChange,
+    handleSubmit,
+  ] = useForm(register);
 
   return (
     <MainContent>
@@ -51,10 +30,9 @@ const Signup = ({ history }) => {
           <Label htmlFor="email">E-mail</Label>
           <Input
             type="text"
-            ref={inputEmail}
             id="email"
-            value={email}
-            onChange={ e => handleChange(e, setEmail) }
+            value={getInputValue('email')}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -62,10 +40,9 @@ const Signup = ({ history }) => {
           <Label htmlFor="username">Username</Label>
           <Input
             type="text"
-            ref={inputUsername}
             id="username"
-            value={username}
-            onChange={ e => handleChange(e, setUsername) }
+            value={getInputValue('username')}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -73,16 +50,14 @@ const Signup = ({ history }) => {
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
-            ref={inputPassword}
             id="password"
-            value={password}
-            onChange={ e => handleChange(e, setPassword) }
+            value={getInputValue('password')}
+            onChange={handleChange}
           />
         </FormGroup>
 
         <SubmitButton
           value="Sign up"
-          disabled={!isValid}
         />
       </form>
     </MainContent>

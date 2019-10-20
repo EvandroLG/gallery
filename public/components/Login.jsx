@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import MainContent from './MainContent';
+import useForm from '../hooks/useForm';
 import { postWithRedirect } from '../libs/http';
 
 import {
@@ -11,59 +12,33 @@ import {
 } from './Form';
 
 const Login = ({ history }) => {
-  const [ isValid, setIsValid ] = useState(false);
-  const [ emailOrUsername, setEmailOrUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const inputEmailOrUsername = useRef(null);
-  const inputPassword = useRef(null);
-
-  function checkIfFormIsValid() {
-    const { emailOrUsername, password } = getInputValues();
-    setIsValid(emailOrUsername && password);
-  }
-
-  useEffect(() => {
-    checkIfFormIsValid();
-  }, []);
-
-  function getInputValues() {
-    const { value: emailOrUsername } = inputEmailOrUsername.current;
-    const { value: password } = inputPassword.current;
-
-    return {
-      emailOrUsername,
-      password,
-    };
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    const { emailOrUsername, password } = getInputValues();
-    postWithRedirect('/api/signin', {
-      username: emailOrUsername,
+  const login = async ({
+    username,
+    password
+  }) => {
+    await postWithRedirect('/api/signin', {
+      username,
       password,
     }, history);
-  }
+  };
 
-  function handleChange(e, setValue) {
-    const { value } = e.target;
-
-    setValue(value);
-    checkIfFormIsValid();
-  }
+  const [
+    fields,
+    getInputValue,
+    handleChange,
+    handleSubmit,
+  ] = useForm(login);
 
   return (
     <MainContent>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label htmlFor="email_or_username">E-mail or Username</Label>
+          <Label htmlFor="username">E-mail or Username</Label>
           <Input
             type="text"
-            ref={inputEmailOrUsername}
-            id="email_or_username"
-            value={emailOrUsername}
-            onChange={ e => handleChange(e, setEmailOrUsername) }
+            id="username"
+            value={getInputValue('username')}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -71,21 +46,19 @@ const Login = ({ history }) => {
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
-            ref={inputPassword}
             id="password"
-            value={password}
-            onChange={ e => handleChange(e, setPassword) }
+            value={getInputValue('password')}
+            onChange={handleChange}
           />
         </FormGroup>
 
         <SubmitButton
           value="Login"
-          disabled={!isValid}
         />
       </form>
     </MainContent>
   );
-}
+};
 
 Login.propTypes = {
   history: PropTypes.object,
