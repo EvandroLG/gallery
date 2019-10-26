@@ -13,7 +13,7 @@ export default (validation, submit) => {
     e.preventDefault();
     setErrors(validation(values));
 
-    !isObjectEmpty(errors) && submit(values);
+    isObjectEmpty(errors) && submit(values);
   };
 
   return [getInputValue, handleChange, handleSubmit, errors, values];
