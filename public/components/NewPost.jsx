@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -13,6 +13,7 @@ import {
 } from './Form';
 
 import { post, authorizationHeader } from "../libs/http";
+import useForm from '../hooks/useForm';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -22,17 +23,18 @@ const Title = styled.h1`
 `;
 
 const NewPost = ({ history }) => {
-  const [ description, setDescription ] = useState('');
-  const [ isValid, setIsValid ] = useState(false);
-  const inputImage = useRef(null);
-  const inputDescription = useRef(null);
+  const image = useRef(null);
+  const [
+    fields,
+    getInputValue,
+    handleChange,
+    handleSubmit,
+  ] = useForm(newPost);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  async function newPost({ description }) {
     const data = new FormData();
-    data.append('photo', inputImage.current.files[0]);
-    data.append('description', inputDescription.current.value);
+    data.append('photo', image.current.files[0]);
+    data.append('description', description);
 
     const result = await post('/api/post', data, {
       ...authorizationHeader,
@@ -45,10 +47,6 @@ const NewPost = ({ history }) => {
     }
   }
 
-  function onChangeFile(e) {
-    setIsValid(Boolean(e.target.value));
-  }
-
   return (
     <MainContent>
       <Title>New Post</Title>
@@ -56,11 +54,12 @@ const NewPost = ({ history }) => {
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <input
-            ref={inputImage}
             id="image"
             type="file"
+            ref={image}
             accept="image/x-png,image/gif,image/jpeg"
-            onChange={onChangeFile}
+            value={getInputValue('image')}
+            onChange={handleChange}
           />
         </FormGroup>
 
@@ -69,16 +68,14 @@ const NewPost = ({ history }) => {
             Description
           </Label>
           <Textarea
-            ref={inputDescription}
             id="description"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
+            value={getInputValue('description')}
+            onChange={handleChange}
           />
         </FormGroup>
 
         <SubmitButton
           value="Submit"
-          disabled={!isValid}
         />
       </form>
     </MainContent>
