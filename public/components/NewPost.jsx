@@ -1,18 +1,13 @@
 import React, { useRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import MainContent from './MainContent';
 import status from '../status';
 
-import {
-  FormGroup,
-  Label,
-  Textarea,
-  SubmitButton
-} from './Form';
+import { FormGroup, Label, Textarea, SubmitButton, FieldError } from './Form';
 
-import { post, authorizationHeader } from "../libs/http";
+import { post, authorizationHeader } from '../libs/http';
 import useForm from '../hooks/useForm';
 
 const Title = styled.h1`
@@ -24,12 +19,20 @@ const Title = styled.h1`
 
 const NewPost = ({ history }) => {
   const image = useRef(null);
-  const [
-    fields,
-    getInputValue,
-    handleChange,
-    handleSubmit,
-  ] = useForm(newPost);
+  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
+    validation,
+    newPost,
+  );
+
+  function validation({ image }) {
+    const errors = {};
+
+    if (!image) {
+      errors.image = 'File is required';
+    }
+
+    return errors;
+  }
 
   async function newPost({ description }) {
     const data = new FormData();
@@ -43,7 +46,7 @@ const NewPost = ({ history }) => {
     if (result.ok) {
       history.push('/');
     } else if (result.status === status.UNAUTHORIZED) {
-      return <Redirect to='/login' />;
+      return <Redirect to="/login" />;
     }
   }
 
@@ -61,12 +64,12 @@ const NewPost = ({ history }) => {
             value={getInputValue('image')}
             onChange={handleChange}
           />
+
+          {errors.image && <FieldError>{errors.image}</FieldError>}
         </FormGroup>
 
         <FormGroup>
-          <Label htmlFor="description">
-            Description
-          </Label>
+          <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
             value={getInputValue('description')}
@@ -74,13 +77,11 @@ const NewPost = ({ history }) => {
           />
         </FormGroup>
 
-        <SubmitButton
-          value="Submit"
-        />
+        <SubmitButton value="Submit" />
       </form>
     </MainContent>
   );
-}
+};
 
 NewPost.propTypes = {
   history: PropTypes.object,
