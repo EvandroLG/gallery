@@ -25,13 +25,9 @@ const NewPost = ({ history }) => {
   );
 
   function validation({ image }) {
-    const errors = {};
-
-    if (!image) {
-      errors.image = 'File is required';
-    }
-
-    return errors;
+    return {
+      ...(!image && { image: 'File is required' }),
+    };
   }
 
   async function newPost({ description }) {
