@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FormGroup = styled.div`
   margin-bottom: 30px;
@@ -40,4 +40,9 @@ export const SubmitButton = styled.input.attrs({ type: 'submit' })`
     background: rgba(0, 0, 0, 0.7);
     cursor: default;
   }
+`;
+
+export const FieldError = styled.div`
+  margin-top: 15px;
+  color: #f00;
 `;
