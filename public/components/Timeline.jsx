@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
-import styled from "styled-components";
-import Post from "./Post";
-
-import { get, authorizationHeader } from "../libs/http";
-import infiniteScroll from '../libs/infinite-scroll';
+import styled from 'styled-components';
+import Post from './Post';
+import useScroll from '../hooks/useScroll';
+import { get, authorizationHeader } from '../libs/http';
 import statusCode from '../status';
 
 const Main = styled.main`
@@ -14,16 +13,15 @@ const Main = styled.main`
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-Main.defaultProps = {
-  ['data-testid']: 'timeline',
-};
-
 export default function Timeline() {
   const url = new URL('/api/posts', location.href);
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [posts, setPosts] = useState([]);
-  let [page, setPage] = useState(1);
-  const ref = useRef();
+  const [page, setPage] = useState(1);
+  const ref = useRef(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedRequest = useCallback(() => request(), []);
+  useScroll(ref, request);
 
   async function request() {
     url.searchParams.set('page', page);
@@ -33,28 +31,24 @@ export default function Timeline() {
         ...authorizationHeader,
       });
 
-      setPosts(prev => [...prev, ...newPosts]);
-      setPage(++page);
-    } catch(e) {
+      setPosts(prevPosts => [...prevPosts, ...newPosts]);
+      setPage(prevPage => prevPage + 1);
+    } catch (e) {
       if (e.status === statusCode.UNAUTHORIZED) {
         setIsAuthorized(false);
       }
     }
   }
 
-  useEffect(() => {
-    request();
-    infiniteScroll(ref, request);
-  }, []);
+  useEffect(() => memoizedRequest(), [memoizedRequest]);
 
-  return (
-    isAuthorized ?
-      <Main ref={ref}>
-        {posts.map((post, key) => (
-          <Post key={key} {...post} />
-        ))}
-      </Main>
-    :
-      <Redirect to='/login' />
+  return isAuthorized ? (
+    <Main ref={ref}>
+      {posts.map((post, key) => (
+        <Post key={key} {...post} />
+      ))}
+    </Main>
+  ) : (
+    <Redirect to="/login" />
   );
 }
