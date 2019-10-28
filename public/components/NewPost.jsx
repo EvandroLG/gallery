@@ -33,7 +33,7 @@ const NewPost = ({ history }) => {
   async function newPost({ description }) {
     const data = new FormData();
     data.append('photo', image.current.files[0]);
-    data.append('description', description);
+    description && data.append('description', description);
 
     const result = await post('/api/post', data, {
       ...authorizationHeader,
