@@ -15,7 +15,10 @@ export const get = (url, querystring = {}, headers = {}) => {
 };
 
 export const getJson = async (url, querystring = {}, headers = {}) => {
-  const result = await get(url, querystring, headers);
+  const result = await get(url, querystring, {
+    'Content-Type': 'application/json',
+    ...headers,
+  });
 
   if (result.ok) {
     return result.json();
