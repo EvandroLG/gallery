@@ -23,7 +23,11 @@ export default function Timeline() {
   const memoizedRequest = useCallback(() => request(), []);
   useScroll(ref, request);
 
-  useEffect(() => memoizedRequest(), [memoizedRequest]);
+  useEffect(() => {
+    (async function() {
+      await memoizedRequest();
+    })();
+  }, [memoizedRequest]);
 
   async function request() {
     try {
