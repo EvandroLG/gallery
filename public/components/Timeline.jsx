@@ -3,7 +3,8 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Post from './Post';
 import useScroll from '../hooks/useScroll';
-import { get, authorizationHeader } from '../libs/http';
+import { authorizationHeader, getJson } from '../libs/http';
+import API from '../api';
 import statusCode from '../status';
 
 const Main = styled.main`
@@ -14,7 +15,6 @@ const Main = styled.main`
 `;
 
 export default function Timeline() {
-  const url = new URL('/api/posts', location.href);
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
@@ -23,24 +23,26 @@ export default function Timeline() {
   const memoizedRequest = useCallback(() => request(), []);
   useScroll(ref, request);
 
-  async function request() {
-    url.searchParams.set('page', page);
+  useEffect(() => memoizedRequest(), [memoizedRequest]);
 
+  async function request() {
     try {
-      const newPosts = await get(url, {
-        ...authorizationHeader,
-      });
+      setPage(prevPage => prevPage + 1);
+      const newPosts = await getJson(
+        API.GET_POSTS,
+        { page },
+        {
+          ...authorizationHeader,
+        },
+      );
 
       setPosts(prevPosts => [...prevPosts, ...newPosts]);
-      setPage(prevPage => prevPage + 1);
     } catch (e) {
       if (e.status === statusCode.UNAUTHORIZED) {
         setIsAuthorized(false);
       }
     }
   }
-
-  useEffect(() => memoizedRequest(), [memoizedRequest]);
 
   return isAuthorized ? (
     <Main ref={ref}>

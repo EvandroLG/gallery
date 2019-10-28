@@ -1,18 +1,27 @@
 export const authorizationHeader = {
-  'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+  Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
 };
 
-export const get = (url, headers = {}) => {
-  return fetch(url, {
-    headers,
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.json();
-    }
+export const get = (url, querystring = {}, headers = {}) => {
+  const urlObject = new URL(url, location.href);
 
-    throw response;
+  Object.keys(querystring).forEach(key => {
+    urlObject.searchParams.append(key, querystring[key]);
   });
+
+  return fetch(urlObject, {
+    headers,
+  });
+};
+
+export const getJson = async (url, querystring = {}, headers = {}) => {
+  const result = await get(url, querystring, headers);
+
+  if (result.ok) {
+    return result.json();
+  }
+
+  throw result;
 };
 
 export const post = (url, data, headers = {}) => {
