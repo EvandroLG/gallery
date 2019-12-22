@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchAuthentication } from '../actions/user';
 
 const Private = ({ history, Component, isLogged, getAuthentication }) => {
-  const [ isLoaded, setIsLoaded ] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     async function request() {
@@ -14,14 +14,14 @@ const Private = ({ history, Component, isLogged, getAuthentication }) => {
     }
 
     request();
-  }, [ getAuthentication ]);
+  }, [getAuthentication]);
 
   if (!isLoaded) {
     return null;
   }
 
   if (!isLogged) {
-    return <Redirect to='/login' />;
+    return <Redirect to="/login" />;
   }
 
   return <Component history={history} />;
@@ -44,5 +44,5 @@ const mapDispatchToProps = {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Private);

@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { createGlobalStyle } from "styled-components";
-import Header from "./Header";
+import { createGlobalStyle } from 'styled-components';
+import Header from './Header';
 import Private from './Private';
-import Timeline from "./Timeline";
+import Timeline from './Timeline';
 import NewPost from './NewPost';
 import Signup from './Signup';
 import Login from './Login';
@@ -39,25 +39,15 @@ export default function App() {
         <Header />
         <Route
           exact
-          path='/'
-          render={props =>
-            <Private { ...props } Component={Timeline} />
-          }
+          path="/"
+          render={props => <Private {...props} Component={Timeline} />}
         />
         <Route
-          path='/new_post'
-          render={props =>
-            <Private { ...props } Component={NewPost} />
-          }
+          path="/new_post"
+          render={props => <Private {...props} Component={NewPost} />}
         />
-        <Route
-          path='/signup'
-          component={Signup}
-        />
-        <Route
-          path='/login'
-          component={Login}
-        />
+        <Route path="/signup" component={Signup} />
+        <Route path="/login" component={Login} />
       </BrowserRouter>
     </>
   );

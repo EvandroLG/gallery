@@ -18,9 +18,9 @@ const getPosts = (req, res) => {
         return res.json(data);
       }
 
-      res.send(404);
+      res.sendStatus(404);
     })
-    .catch(() => res.send(500));
+    .catch(() => res.sendStatus(500));
 };
 
 const createPost = (req, res) => {
@@ -34,8 +34,8 @@ const createPost = (req, res) => {
     image: path.join(uploads, file.filename),
     description: req.body.description
   })
-    .then(() => res.send(200))
-    .catch(() => res.send(500));
+    .then(() => res.sendStatus(200))
+    .catch(() => res.sendStatus(500));
 };
 
 module.exports = {

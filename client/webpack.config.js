@@ -1,12 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './public/Index.js',
+  entry: './src/Index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'static/bundle.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: 'static/bundle.js',
   },
 
   module: {
@@ -15,14 +15,14 @@ module.exports = {
         test: /\.(jsx?)$/,
         exclude: /(node_modules|dist)/,
         use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
+          loader: 'babel-loader',
+        },
+      },
+    ],
   },
 
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
 
   devtool: 'inline-source-map',
@@ -30,7 +30,7 @@ module.exports = {
   plugins: [
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-    })
-  ]
+      template: './src/index.html',
+    }),
+  ],
 };

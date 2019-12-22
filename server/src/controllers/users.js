@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const { secrets } = require("../config");
+const { secrets } = require('../config');
 
 const createToken = user => {
   return jwt.sign({ id: user.id }, secrets.jwt, {
@@ -33,7 +33,7 @@ const signinUser = async (req, res) => {
     return res.status(201).send({
       token: createToken(user),
     });
-  } catch(e) {
+  } catch (e) {
     res.status(500).end();
   }
 };
@@ -50,7 +50,7 @@ const signupUser = async (req, res) => {
     const token = createToken(user);
 
     return res.status(201).send({ token });
-  } catch(e) {
+  } catch (e) {
     return res.status(400).end();
   }
 };
