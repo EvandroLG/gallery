@@ -1,8 +1,8 @@
 {
   "name": "client",
   "scripts": {
-    "dev": "webpack --mode development",
-    "dev:watch": "npm run dev -- --watch",
+    "build": "webpack --mode development",
+    "build:watch": "npm run dev -- --watch",
     "test": "jest",
     "test:update": "jest -u",
     "test:watch": "jest --watch",
