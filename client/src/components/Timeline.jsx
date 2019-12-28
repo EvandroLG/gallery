@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Post from './Post';
 import useScroll from '../hooks/useScroll';
 import { authorizationHeader, getJson } from '../libs/http';
-import API from '../api';
-import statusCode from '../status';
+import API from '../configs/api';
+import statusCode from '../configs/status';
 
 const Main = styled.main`
   width: 95%;

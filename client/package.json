@@ -2,7 +2,7 @@
   "name": "client",
   "scripts": {
     "build": "webpack --mode development",
-    "build:watch": "npm run dev -- --watch",
+    "build:watch": "npm run build -- --watch",
     "test": "jest",
     "test:update": "jest -u",
     "test:watch": "jest --watch",

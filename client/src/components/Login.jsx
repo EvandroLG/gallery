@@ -1,10 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import MainContent from './MainContent';
 import useForm from '../hooks/useForm';
 import { postWithRedirect } from '../libs/http';
 
 import { FormGroup, Label, SubmitButton, Input, FieldError } from './Form';
+
+const SignupLink = styled(Link)`
+  margin-left: 15px;
+`;
 
 const Login = ({ history }) => {
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
@@ -56,6 +62,7 @@ const Login = ({ history }) => {
         </FormGroup>
 
         <SubmitButton value="Login" />
+        <SignupLink to='/signup'>Signup</SignupLink>
       </form>
     </MainContent>
   );

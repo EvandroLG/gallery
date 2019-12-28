@@ -1,12 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+
 import Header from './Header';
 import Private from './Private';
 import Timeline from './Timeline';
 import NewPost from './NewPost';
 import Signup from './Signup';
 import Login from './Login';
+
+import theme from '../configs/theme';
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -18,16 +21,18 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    color: ${theme.DEFAULT_TEXT_COLOR};
     font-family: Helvetica, Arial, sans-serif;
     border: 0;
   }
 
   body {
-    background: #fafafa;
+    background: ${theme.BG_BODY};
   }
 
   a {
     text-decoration: none;
+    color: ${theme.DEFAULT_LINK_COLOR};
   }
 `;
 

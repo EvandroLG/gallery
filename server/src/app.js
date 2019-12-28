@@ -11,7 +11,6 @@ mongoose.connect(db, {
 
 const app = express();
 app.use(bodyParser.json());
-
 app.use('/api', routes);
 app.use(express.static(dist));
 app.use(express.static(uploads));

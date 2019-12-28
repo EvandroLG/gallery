@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MainContent from './MainContent';
-import status from '../status';
+import status from '../configs/status';
 
 import { FormGroup, Label, Textarea, SubmitButton, FieldError } from './Form';
 

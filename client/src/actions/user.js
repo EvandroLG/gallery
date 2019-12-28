@@ -1,4 +1,4 @@
-import API from '../api';
+import API from '../configs/api';
 import { authorizationHeader, getJson } from '../libs/http';
 
 export const AUTHENTICATION_UPDATE = 'AUTHENTICATION_UPDATE';
