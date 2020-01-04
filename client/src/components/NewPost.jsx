@@ -19,10 +19,7 @@ const Title = styled.h1`
 
 const NewPost = ({ history }) => {
   const image = useRef(null);
-  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
-    validation,
-    newPost,
-  );
+  const [getInputValue, handleChange, handleSubmit, isValid, errors] = useForm(validation, newPost);
 
   function validation({ image }) {
     return {
@@ -66,14 +63,10 @@ const NewPost = ({ history }) => {
 
         <FormGroup>
           <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={getInputValue('description')}
-            onChange={handleChange}
-          />
+          <Textarea id="description" value={getInputValue('description')} onChange={handleChange} />
         </FormGroup>
 
-        <SubmitButton value="Submit" />
+        <SubmitButton value="Submit" disabled={!isValid} />
       </form>
     </MainContent>
   );

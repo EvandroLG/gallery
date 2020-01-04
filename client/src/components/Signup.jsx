@@ -8,10 +8,7 @@ import { isValidEmail, isPasswordValid } from '../libs/utils';
 import { FormGroup, Label, SubmitButton, Input, FieldError } from './Form';
 
 const Signup = ({ history }) => {
-  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
-    validation,
-    submit,
-  );
+  const [getInputValue, handleChange, handleSubmit, isValid, errors] = useForm(validation, submit);
 
   function validation({ email, username, password }) {
     return {
@@ -30,12 +27,7 @@ const Signup = ({ history }) => {
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="email">*E-mail</Label>
-          <Input
-            type="text"
-            id="email"
-            value={getInputValue('email')}
-            onChange={handleChange}
-          />
+          <Input type="text" id="email" value={getInputValue('email')} onChange={handleChange} />
           {errors.email && <FieldError>{errors.email}</FieldError>}
         </FormGroup>
 
@@ -61,7 +53,7 @@ const Signup = ({ history }) => {
           {errors.password && <FieldError>{errors.password}</FieldError>}
         </FormGroup>
 
-        <SubmitButton value="Sign up" />
+        <SubmitButton value="Sign up" disabled={!isValid} />
       </form>
     </MainContent>
   );

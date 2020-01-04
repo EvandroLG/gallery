@@ -13,7 +13,7 @@ const SignupLink = styled(Link)`
 `;
 
 const Login = ({ history }) => {
-  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
+  const [getInputValue, handleChange, handleSubmit, isValid, errors] = useForm(
     validation,
     login,
   );
@@ -61,8 +61,8 @@ const Login = ({ history }) => {
           {errors.password && <FieldError>{errors.password}</FieldError>}
         </FormGroup>
 
-        <SubmitButton value="Login" />
-        <SignupLink to='/signup'>Signup</SignupLink>
+        <SubmitButton value="Login" disabled={!isValid} />
+        <SignupLink to="/signup">Signup</SignupLink>
       </form>
     </MainContent>
   );
