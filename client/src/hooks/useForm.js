@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { isObjectEmpty } from '../libs/utils';
 
 export default (validation, submit) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    setErrors(validation(values));
+  }, [validation, values]);
 
   const getInputValue = value => values[value] || '';
 
@@ -13,10 +16,6 @@ export default (validation, submit) => {
       ...values,
       [e.target.id]: e.target.value,
     });
-
-    setErrors(validation(values));
-
-    setIsValid(isObjectEmpty(errors));
   };
 
   const handleSubmit = e => {
@@ -26,5 +25,5 @@ export default (validation, submit) => {
     isObjectEmpty(errors) && submit(values);
   };
 
-  return [getInputValue, handleChange, handleSubmit, isValid, errors, values];
+  return [getInputValue, handleChange, handleSubmit, errors, values];
 };

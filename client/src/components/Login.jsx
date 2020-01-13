@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import MainContent from './MainContent';
-import useForm from '../hooks/useForm';
+import { useForm } from '@evandrolg/react-form-helper';
 import { postWithRedirect } from '../libs/http';
 
 import { FormGroup, Label, SubmitButton, Input, FieldError } from './Form';
@@ -12,20 +12,13 @@ const SignupLink = styled(Link)`
   margin-left: 15px;
 `;
 
-const Login = ({ history }) => {
-  const [getInputValue, handleChange, handleSubmit, isValid, errors] = useForm(
-    validation,
-    login,
-  );
+const validation = ({ username, password }) => ({
+  ...(!username && { username: 'Username is required' }),
+  ...(!password && { password: 'Password is required' }),
+});
 
-  function validation({ username, password }) {
-    return {
-      ...(!username && { username: 'Username is required' }),
-      ...(!password && { password: 'Password is required' }),
-    };
-  }
-
-  async function login({ username, password }) {
+const login = history => {
+  return async ({ username, password }) => {
     await postWithRedirect(
       '/api/signin',
       {
@@ -34,7 +27,14 @@ const Login = ({ history }) => {
       },
       history,
     );
-  }
+  };
+};
+
+const Login = ({ history }) => {
+  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
+    validation,
+    login(history),
+  );
 
   return (
     <MainContent>
@@ -61,7 +61,7 @@ const Login = ({ history }) => {
           {errors.password && <FieldError>{errors.password}</FieldError>}
         </FormGroup>
 
-        <SubmitButton value="Login" disabled={!isValid} />
+        <SubmitButton value="Login" disabled={Object.keys(errors).length} />
         <SignupLink to="/signup">Signup</SignupLink>
       </form>
     </MainContent>

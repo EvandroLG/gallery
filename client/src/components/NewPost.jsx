@@ -8,7 +8,7 @@ import status from '../configs/status';
 import { FormGroup, Label, Textarea, SubmitButton, FieldError } from './Form';
 
 import { post, authorizationHeader } from '../libs/http';
-import useForm from '../hooks/useForm';
+import { useForm } from '@evandrolg/react-form-helper';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -17,15 +17,16 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
+const validation = ({ image }) => ({
+  ...(!image && { image: 'File is required' }),
+});
+
 const NewPost = ({ history }) => {
   const image = useRef(null);
-  const [getInputValue, handleChange, handleSubmit, isValid, errors] = useForm(validation, newPost);
-
-  function validation({ image }) {
-    return {
-      ...(!image && { image: 'File is required' }),
-    };
-  }
+  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
+    validation,
+    newPost,
+  );
 
   async function newPost({ description }) {
     const data = new FormData();
@@ -63,10 +64,14 @@ const NewPost = ({ history }) => {
 
         <FormGroup>
           <Label htmlFor="description">Description</Label>
-          <Textarea id="description" value={getInputValue('description')} onChange={handleChange} />
+          <Textarea
+            id="description"
+            value={getInputValue('description')}
+            onChange={handleChange}
+          />
         </FormGroup>
 
-        <SubmitButton value="Submit" disabled={!isValid} />
+        <SubmitButton value="Submit" disabled={Object.keys(errors).length} />
       </form>
     </MainContent>
   );

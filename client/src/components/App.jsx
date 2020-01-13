@@ -42,15 +42,8 @@ export default function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Header />
-        <Route
-          exact
-          path="/"
-          render={props => <Private {...props} Component={Timeline} />}
-        />
-        <Route
-          path="/new_post"
-          render={props => <Private {...props} Component={NewPost} />}
-        />
+        <Route exact path="/" render={props => <Private {...props} Component={Timeline} />} />
+        <Route path="/new_post" render={props => <Private {...props} Component={NewPost} />} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
       </BrowserRouter>
