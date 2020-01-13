@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const MainContent = styled.main`
+const Container = styled.main`
   width: 95%;
   margin: 0 auto;
   margin-top: 40px;
@@ -10,4 +10,4 @@ const MainContent = styled.main`
   border-radius: 5px;
 `;
 
-export default MainContent;
+export default Container;

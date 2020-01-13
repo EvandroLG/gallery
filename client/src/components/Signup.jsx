@@ -1,70 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MainContent from './MainContent';
-import { postWithRedirect } from '../libs/http';
+import Container from '../styled/Container';
+import {postWithRedirect} from '../libs/http';
 import {
   useForm,
   isEmailValid,
   isPasswordValid,
 } from '@evandrolg/react-form-helper';
 
-import { FormGroup, Label, SubmitButton, Input, FieldError } from './Form';
+import {
+  StyledFormGroup,
+  StyledLabel,
+  StyledSubmitButton,
+  StyledInput,
+  StyledFieldError,
+} from '../styled/Form';
 
-const validation = ({ email, username, password }) => ({
-  ...(!isEmailValid(email) && { email: 'E-mail is not valid' }),
-  ...(!username && { username: 'Username is required' }),
-  ...(!isPasswordValid(password) && { password: 'Password is not valid' }),
+const validation = ({email, username, password}) => ({
+  ...(!isEmailValid(email) && {email: 'E-mail is not valid'}),
+  ...(!username && {username: 'Username is required'}),
+  ...(!isPasswordValid(password) && {password: 'Password is not valid'}),
 });
 
 const submit = async data => {
   await postWithRedirect('/api/signup', data, history);
 };
 
-const Signup = ({ history }) => {
-  const [getInputValue, handleChange, handleSubmit, errors] = useForm(
+const Signup = () => {
+  const [getStyledInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     submit,
   );
 
   return (
-    <MainContent>
+    <Container>
       <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="email">*E-mail</Label>
-          <Input
+        <StyledFormGroup>
+          <StyledLabel htmlFor="email">*E-mail</StyledLabel>
+          <StyledInput
             type="text"
             id="email"
-            value={getInputValue('email')}
+            value={getStyledInputValue('email')}
             onChange={handleChange}
           />
-          {errors.email && <FieldError>{errors.email}</FieldError>}
-        </FormGroup>
+          {errors.email && <StyledFieldError>{errors.email}</StyledFieldError>}
+        </StyledFormGroup>
 
-        <FormGroup>
-          <Label htmlFor="username">*Username</Label>
-          <Input
+        <StyledFormGroup>
+          <StyledLabel htmlFor="username">*Username</StyledLabel>
+          <StyledInput
             type="text"
             id="username"
-            value={getInputValue('username')}
+            value={getStyledInputValue('username')}
             onChange={handleChange}
           />
-          {errors.username && <FieldError>{errors.username}</FieldError>}
-        </FormGroup>
+          {errors.username && (
+            <StyledFieldError>{errors.username}</StyledFieldError>
+          )}
+        </StyledFormGroup>
 
-        <FormGroup>
-          <Label htmlFor="password">*Password</Label>
-          <Input
+        <StyledFormGroup>
+          <StyledLabel htmlFor="password">*Password</StyledLabel>
+          <StyledInput
             type="password"
             id="password"
-            value={getInputValue('password')}
+            value={getStyledInputValue('password')}
             onChange={handleChange}
           />
-          {errors.password && <FieldError>{errors.password}</FieldError>}
-        </FormGroup>
+          {errors.password && (
+            <StyledFieldError>{errors.password}</StyledFieldError>
+          )}
+        </StyledFormGroup>
 
-        <SubmitButton value="Sign up" disabled={Object.keys(errors).length} />
+        <StyledSubmitButton
+          value="Sign up"
+          disabled={Object.keys(errors).length}
+        />
       </form>
-    </MainContent>
+    </Container>
   );
 };
 

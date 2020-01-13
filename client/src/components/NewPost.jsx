@@ -1,14 +1,20 @@
-import React, { useRef } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, {useRef} from 'react';
+import {Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import MainContent from './MainContent';
+import Container from '../styled/Container';
 import status from '../configs/status';
 
-import { FormGroup, Label, Textarea, SubmitButton, FieldError } from './Form';
+import {
+  StyledFormGroup,
+  StyledLabel,
+  StyledTextarea,
+  StyledSubmitButton,
+  StyledFieldError,
+} from '../styled/Form';
 
-import { post, authorizationHeader } from '../libs/http';
-import { useForm } from '@evandrolg/react-form-helper';
+import {post, authorizationHeader} from '../libs/http';
+import {useForm} from '@evandrolg/react-form-helper';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -17,18 +23,18 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const validation = ({ image }) => ({
-  ...(!image && { image: 'File is required' }),
+const validation = ({image}) => ({
+  ...(!image && {image: 'File is required'}),
 });
 
-const NewPost = ({ history }) => {
+const NewPost = ({history}) => {
   const image = useRef(null);
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     newPost,
   );
 
-  async function newPost({ description }) {
+  async function newPost({description}) {
     const data = new FormData();
     data.append('photo', image.current.files[0]);
     description && data.append('description', description);
@@ -45,11 +51,11 @@ const NewPost = ({ history }) => {
   }
 
   return (
-    <MainContent>
+    <Container>
       <Title>New Post</Title>
 
       <form onSubmit={handleSubmit}>
-        <FormGroup>
+        <StyledFormGroup>
           <input
             id="image"
             type="file"
@@ -59,21 +65,24 @@ const NewPost = ({ history }) => {
             onChange={handleChange}
           />
 
-          {errors.image && <FieldError>{errors.image}</FieldError>}
-        </FormGroup>
+          {errors.image && <StyledFieldError>{errors.image}</StyledFieldError>}
+        </StyledFormGroup>
 
-        <FormGroup>
-          <Label htmlFor="description">Description</Label>
-          <Textarea
+        <StyledFormGroup>
+          <StyledLabel htmlFor="description">Description</StyledLabel>
+          <StyledTextarea
             id="description"
             value={getInputValue('description')}
             onChange={handleChange}
           />
-        </FormGroup>
+        </StyledFormGroup>
 
-        <SubmitButton value="Submit" disabled={Object.keys(errors).length} />
+        <StyledSubmitButton
+          value="Submit"
+          disabled={Object.keys(errors).length}
+        />
       </form>
-    </MainContent>
+    </Container>
   );
 };
 

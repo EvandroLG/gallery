@@ -1,29 +1,29 @@
 import styled from 'styled-components';
 
-export const FormGroup = styled.div`
+export const StyledFormGroup = styled.div`
   margin-bottom: 30px;
 `;
 
-export const Label = styled.label`
+export const StyledLabel = styled.label`
   display: block;
   cursor: pointer;
   margin-bottom: 0.5em;
 `;
 
-export const Textarea = styled.textarea`
+export const StyledTextarea = styled.textarea`
   width: 100%;
   height: 100px;
   padding: 5px;
   border: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-export const Input = styled.input`
+export const StyledInput = styled.input`
   width: 100%;
   padding: 5px;
   border: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-export const SubmitButton = styled.input.attrs({ type: 'submit' })`
+export const StyledSubmitButton = styled.input.attrs({ type: 'submit' })`
   cursor: pointer;
   padding: 15px;
   background: #000;
@@ -42,7 +42,7 @@ export const SubmitButton = styled.input.attrs({ type: 'submit' })`
   }
 `;
 
-export const FieldError = styled.div`
+export const StyledFieldError = styled.div`
   margin-top: 15px;
   color: #f00;
 `;
