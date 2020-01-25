@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const MainHeader = styled.div`
+export const StyledHeader = styled.div`
   position: relative;
   z-index: 1;
   padding: 0 15px;
@@ -13,27 +12,14 @@ const MainHeader = styled.div`
   height: 75px;
 `;
 
-MainHeader.defaultProps = {
-  ['data-testid']: 'header',
-};
-
-const Logo = styled(Link)`
+export const StyledLogo = styled(Link)`
   color: #5a5758;
   font-size: 32px;
   text-transform: uppercase;
 `;
 
-const NewPostLink = styled(Link)`
+export const StyledNewPostLink = styled(Link)`
   position: absolute;
   z-index: 2;
   right: 15px;
 `;
-
-export default function Header() {
-  return (
-    <MainHeader>
-      <Logo to="/">Gallery</Logo>
-      <NewPostLink to="new_post">New Post</NewPostLink>
-    </MainHeader>
-  );
-}

@@ -1,14 +1,19 @@
 import React, { useRef } from 'react';
-import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import MainContent from './MainContent';
+import Container from '../styled/Container';
 import status from '../configs/status';
 
-import { FormGroup, Label, Textarea, SubmitButton, FieldError } from './Form';
+import {
+  StyledFormGroup,
+  StyledLabel,
+  StyledTextarea,
+  StyledSubmitButton,
+  StyledFieldError,
+} from '../styled/Form';
 
 import { post, authorizationHeader } from '../libs/http';
-import useForm from '../hooks/useForm';
+import useForm, { Dict } from '../hooks/useForm';
 
 const Title = styled.h1`
   font-size: 25px;
@@ -17,22 +22,23 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const NewPost = ({ history }) => {
-  const image = useRef(null);
+const validation = ({ image }: Dict) => ({
+  ...(!image && { image: 'File is required' }),
+});
+
+const NewPost: React.FC<RouteComponentProps> = ({ history }) => {
+  const image = useRef<HTMLInputElement>(null);
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     newPost,
   );
 
-  function validation({ image }) {
-    return {
-      ...(!image && { image: 'File is required' }),
-    };
-  }
-
-  async function newPost({ description }) {
+  async function newPost({ description }: Dict) {
     const data = new FormData();
-    data.append('photo', image.current.files[0]);
+    const current = image?.current;
+    const files = current?.files;
+
+    data.append('photo', (files || [])[0]);
     description && data.append('description', description);
 
     const result = await post('/api/post', data, {
@@ -47,11 +53,11 @@ const NewPost = ({ history }) => {
   }
 
   return (
-    <MainContent>
+    <Container>
       <Title>New Post</Title>
 
       <form onSubmit={handleSubmit}>
-        <FormGroup>
+        <StyledFormGroup>
           <input
             id="image"
             type="file"
@@ -61,26 +67,25 @@ const NewPost = ({ history }) => {
             onChange={handleChange}
           />
 
-          {errors.image && <FieldError>{errors.image}</FieldError>}
-        </FormGroup>
+          {errors.image && <StyledFieldError>{errors.image}</StyledFieldError>}
+        </StyledFormGroup>
 
-        <FormGroup>
-          <Label htmlFor="description">Description</Label>
-          <Textarea
+        <StyledFormGroup>
+          <StyledLabel htmlFor="description">Description</StyledLabel>
+          <StyledTextarea
             id="description"
             value={getInputValue('description')}
             onChange={handleChange}
           />
-        </FormGroup>
+        </StyledFormGroup>
 
-        <SubmitButton value="Submit" />
+        <StyledSubmitButton
+          value="Submit"
+          disabled={!!Object.keys(errors).length}
+        />
       </form>
-    </MainContent>
+    </Container>
   );
-};
-
-NewPost.propTypes = {
-  history: PropTypes.object,
 };
 
 export default NewPost;

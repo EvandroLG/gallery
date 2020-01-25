@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { History } from 'history';
 import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchAuthentication } from '../actions/user';
 
-const Private = ({ history, Component, isLogged, getAuthentication }) => {
+const Private = ({
+  history,
+  Component,
+  isLogged,
+  getAuthentication,
+}: {
+  history: History;
+  Component: any;
+  isLogged: boolean;
+  getAuthentication: () => any;
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -27,14 +37,7 @@ const Private = ({ history, Component, isLogged, getAuthentication }) => {
   return <Component history={history} />;
 };
 
-Private.propTypes = {
-  history: PropTypes.object.isRequired,
-  Component: PropTypes.func.isRequired,
-  isLogged: PropTypes.bool,
-  getAuthentication: PropTypes.func,
-};
-
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user }: { user: { isLogged: boolean } }) => ({
   isLogged: user.isLogged,
 });
 
@@ -42,7 +45,4 @@ const mapDispatchToProps = {
   getAuthentication: fetchAuthentication,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Private);
+export default connect(mapStateToProps, mapDispatchToProps)(Private);

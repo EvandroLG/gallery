@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { IPost } from '../interfaces/post';
 import Post from './Post';
 import useScroll from '../hooks/useScroll';
 import { authorizationHeader, getJson } from '../libs/http';
@@ -15,9 +17,9 @@ const Main = styled.main`
 `;
 
 export default function Timeline() {
-  const [isAuthorized, setIsAuthorized] = useState(true);
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
+  const [posts, setPosts] = useState<Array<IPost>>([]);
+  const [page, setPage] = useState<number>(1);
   const ref = useRef(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedRequest = useCallback(() => request(), []);
@@ -50,8 +52,10 @@ export default function Timeline() {
 
   return isAuthorized ? (
     <Main ref={ref}>
-      {posts.map((post, key) => (
-        <Post key={key} {...post} />
+      {posts.map(({ image, description, createdAt }, key) => (
+        <div key={key}>
+          <Post image={image} description={description} createdAt={createdAt} />
+        </div>
       ))}
     </Main>
   ) : (

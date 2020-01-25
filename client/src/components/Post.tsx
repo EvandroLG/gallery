@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { IPost } from '../interfaces/post';
 import { fromUtcToLocalTime, formatfromNow } from '../libs/date';
 
 const Article = styled.article`
@@ -36,11 +36,11 @@ const Image = styled.img`
   margin: 0 auto;
 `;
 
-const Post = ({ image, description, createdAt }) => {
-  function formatDate() {
+const Post: React.FC<IPost> = ({ image, description, createdAt }) => {
+  const formatDate = () => {
     const date = fromUtcToLocalTime(new Date(createdAt));
     return formatfromNow(date);
-  }
+  };
 
   return (
     <Article>
@@ -55,12 +55,6 @@ const Post = ({ image, description, createdAt }) => {
       </DescriptionWrapper>
     </Article>
   );
-};
-
-Post.propTypes = {
-  image: PropTypes.string,
-  description: PropTypes.string,
-  createdAt: PropTypes.string,
 };
 
 export default Post;

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/static/",
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "strict": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
+  }
+}
