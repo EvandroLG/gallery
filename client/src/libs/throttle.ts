@@ -1,4 +1,4 @@
-export default (callback, wait) => {
+export default (callback: () => void, wait: number) => {
   let wasCalled = false;
 
   return () => {

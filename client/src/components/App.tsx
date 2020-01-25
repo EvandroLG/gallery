@@ -9,24 +9,30 @@ import Signup from './Signup';
 import Login from './Login';
 import GlobalStyle from '../styled/GlobalStyled';
 
-export default function App() {
+const App: React.FC = () => {
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
         <Header />
         <Route
-          exact
+          exact={true}
           path="/"
-          render={props => <Private {...props} Component={Timeline} />}
+          render={({ history }) => (
+            <Private history={history} Component={Timeline} />
+          )}
         />
         <Route
           path="/new_post"
-          render={props => <Private {...props} Component={NewPost} />}
+          render={({ history }) => (
+            <Private history={history} Component={NewPost} />
+          )}
         />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
       </BrowserRouter>
     </>
   );
-}
+};
+
+export default App;

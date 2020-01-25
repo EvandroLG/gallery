@@ -1,9 +1,13 @@
 import API from '../configs/api';
 import { authorizationHeader, getJson } from '../libs/http';
+import { Dispatch } from 'react';
 
 export const AUTHENTICATION_UPDATE = 'AUTHENTICATION_UPDATE';
 
-const getAuthenticationUpdate = data => {
+const getAuthenticationUpdate = (data: {
+  isLogged: boolean;
+  username: string | null;
+}) => {
   return {
     type: AUTHENTICATION_UPDATE,
     payload: data,
@@ -11,7 +15,7 @@ const getAuthenticationUpdate = data => {
 };
 
 export const fetchAuthentication = () => {
-  return async dispatch => {
+  return async (dispatch: Dispatch<any>) => {
     try {
       const data = await getJson(
         API.GET_AUTH,

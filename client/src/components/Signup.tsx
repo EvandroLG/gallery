@@ -1,13 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Container from '../styled/Container';
-import {postWithRedirect} from '../libs/http';
-import {
-  useForm,
-  isEmailValid,
-  isPasswordValid,
-} from '@evandrolg/react-form-helper';
+import { History } from 'history';
+import { isEmailValid, isPasswordValid } from '@evandrolg/react-form-helper';
 
+import Container from '../styled/Container';
+import { postWithRedirect } from '../libs/http';
+import useForm, { Dict } from '../hooks/useForm';
 import {
   StyledFormGroup,
   StyledLabel,
@@ -15,21 +12,24 @@ import {
   StyledInput,
   StyledFieldError,
 } from '../styled/Form';
+import { RouteComponentProps } from 'react-router-dom';
 
-const validation = ({email, username, password}) => ({
-  ...(!isEmailValid(email) && {email: 'E-mail is not valid'}),
-  ...(!username && {username: 'Username is required'}),
-  ...(!isPasswordValid(password) && {password: 'Password is not valid'}),
+const validation = ({ email, username, password }: Dict) => ({
+  ...(!isEmailValid(email) && { email: 'E-mail is not valid' }),
+  ...(!username && { username: 'Username is required' }),
+  ...(!isPasswordValid(password) && { password: 'Password is not valid' }),
 });
 
-const submit = async data => {
-  await postWithRedirect('/api/signup', data, history);
+const submit = (history: History) => {
+  return async (data: Dict) => {
+    await postWithRedirect('/api/signup', data, history);
+  };
 };
 
-const Signup = () => {
+const Signup: React.FC<RouteComponentProps> = ({ history }) => {
   const [getStyledInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
-    submit,
+    submit(history),
   );
 
   return (
@@ -74,15 +74,11 @@ const Signup = () => {
 
         <StyledSubmitButton
           value="Sign up"
-          disabled={Object.keys(errors).length}
+          disabled={!!Object.keys(errors).length}
         />
       </form>
     </Container>
   );
-};
-
-Signup.propTypes = {
-  history: PropTypes.object,
 };
 
 export default Signup;

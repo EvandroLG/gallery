@@ -1,36 +1,24 @@
 const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/Index.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'static/bundle.js',
-  },
+  entry: './src/Index.tsx',
 
   module: {
     rules: [
       {
-        test: /\.(jsx?)$/,
-        exclude: /(node_modules|dist)/,
-        use: {
-          loader: 'babel-loader',
-        },
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
     ],
   },
 
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js'],
   },
 
-  devtool: 'inline-source-map',
-
-  plugins: [
-    new webpack.ProgressPlugin(),
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-  ],
+  output: {
+    filename: 'static/bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
 };

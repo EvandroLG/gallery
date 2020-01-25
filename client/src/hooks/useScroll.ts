@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, RefObject } from 'react';
 import throttle from '../libs/throttle';
 
-export default (ref, callback) => {
+export default (ref: RefObject<HTMLElement>, callback: () => void) => {
   useEffect(() => {
     const handleScroll = throttle(() => {
       const current = ref.current;

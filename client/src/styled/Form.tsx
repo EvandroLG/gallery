@@ -23,7 +23,13 @@ export const StyledInput = styled.input`
   border: 1px solid rgba(0, 0, 0, 0.0975);
 `;
 
-export const StyledSubmitButton = styled.input.attrs({ type: 'submit' })`
+type ButtonProps = {
+  disabled: boolean;
+};
+
+export const StyledSubmitButton = styled.input.attrs({ type: 'submit' })<
+  ButtonProps
+>`
   cursor: pointer;
   padding: 15px;
   background: #000;

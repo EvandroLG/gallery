@@ -1,10 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import { History } from 'history';
 import Container from '../styled/Container';
-import {useForm} from '@evandrolg/react-form-helper';
-import {postWithRedirect} from '../libs/http';
+import useForm, { Dict } from '../hooks/useForm';
+import { postWithRedirect } from '../libs/http';
 
 import {
   StyledFormGroup,
@@ -18,13 +18,13 @@ const SignupLink = styled(Link)`
   margin-left: 15px;
 `;
 
-const validation = ({username, password}) => ({
-  ...(!username && {username: 'Username is required'}),
-  ...(!password && {password: 'Password is required'}),
+const validation = ({ username, password }: Dict) => ({
+  ...(!username && { username: 'Username is required' }),
+  ...(!password && { password: 'Password is required' }),
 });
 
-const login = history => {
-  return async ({username, password}) => {
+const login = (history: History) => {
+  return async ({ username, password }: Dict) => {
     await postWithRedirect(
       '/api/signin',
       {
@@ -36,7 +36,7 @@ const login = history => {
   };
 };
 
-const Login = ({history}) => {
+const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     login(history),
@@ -59,7 +59,7 @@ const Login = ({history}) => {
         </StyledFormGroup>
 
         <StyledFormGroup>
-          <Label htmlFor="password">*Password</Label>
+          <StyledLabel htmlFor="password">*Password</StyledLabel>
           <StyledInput
             type="password"
             id="password"
@@ -73,16 +73,12 @@ const Login = ({history}) => {
 
         <StyledSubmitButton
           value="Login"
-          disabled={Object.keys(errors).length}
+          disabled={!!Object.keys(errors).length}
         />
         <SignupLink to="/signup">Signup</SignupLink>
       </form>
     </Container>
   );
-};
-
-Login.propTypes = {
-  history: PropTypes.object,
 };
 
 export default Login;
