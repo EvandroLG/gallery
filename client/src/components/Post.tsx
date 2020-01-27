@@ -6,7 +6,7 @@ import {fromUtcToLocalTime, formatfromNow} from '../libs/date';
 const Article = styled.article`
   margin-top: 40px;
   margin-bottom: 20px;
-  padding: 15px 0;
+  padding: 15px;
   width: 100%;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.0975);
