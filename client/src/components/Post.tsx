@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IPost } from '../interfaces/post';
-import { fromUtcToLocalTime, formatfromNow } from '../libs/date';
+import {IPost} from '../interfaces/post';
+import {fromUtcToLocalTime, formatfromNow} from '../libs/date';
 
 const Article = styled.article`
   margin-top: 40px;
@@ -34,9 +34,10 @@ const DescriptionWrapper = styled.div`
 const Image = styled.img`
   display: block;
   margin: 0 auto;
+  width: 100%;
 `;
 
-const Post: React.FC<IPost> = ({ image, description, createdAt }) => {
+const Post: React.FC<IPost> = ({image, description, createdAt}) => {
   const formatDate = () => {
     const date = fromUtcToLocalTime(new Date(createdAt));
     return formatfromNow(date);
