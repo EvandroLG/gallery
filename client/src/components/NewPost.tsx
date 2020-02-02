@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import React, { useRef, useEffect } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../styled/Container';
-import status from '../configs/status';
 
 import {
   StyledFormGroup,
@@ -12,7 +11,7 @@ import {
   StyledFieldError,
 } from '../styled/Form';
 
-import { post, authorizationHeader } from '../libs/http';
+import useHttpPost from '../hooks/useHttpPost';
 import useForm, { Dict } from '../hooks/useForm';
 
 const Title = styled.h1`
@@ -28,28 +27,27 @@ const validation = ({ image }: Dict) => ({
 
 const NewPost: React.FC<RouteComponentProps> = ({ history }) => {
   const image = useRef<HTMLInputElement>(null);
+  const [setData, isLoading, response] = useHttpPost('/api/post');
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     newPost,
   );
 
+  useEffect(() => {
+    if (response?.ok) {
+      history.push('/');
+    }
+  }, [response]);
+
   async function newPost({ description }: Dict) {
-    const data = new FormData();
+    const formData = new FormData();
     const current = image?.current;
     const files = current?.files;
 
-    data.append('photo', (files || [])[0]);
-    description && data.append('description', description);
+    formData.append('photo', (files || [])[0]);
+    description && formData.append('description', description);
 
-    const result = await post('/api/post', data, {
-      ...authorizationHeader,
-    });
-
-    if (result.ok) {
-      history.push('/');
-    } else if (result.status === status.UNAUTHORIZED) {
-      return <Redirect to="/login" />;
-    }
+    setData(formData);
   }
 
   return (
@@ -80,8 +78,8 @@ const NewPost: React.FC<RouteComponentProps> = ({ history }) => {
         </StyledFormGroup>
 
         <StyledSubmitButton
-          value="Submit"
-          disabled={!!Object.keys(errors).length}
+          value={isLoading ? 'Posting...' : 'Post'}
+          disabled={!!Object.keys(errors).length || isLoading}
         />
       </form>
     </Container>

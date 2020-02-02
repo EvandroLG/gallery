@@ -4,11 +4,15 @@ import { authorizationHeader } from '../libs/http';
 export default (url: string) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState<Response | null>(null);
+  const [response, setResponse] = useState<any | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const httpPost = async () => {
+      if (!data) {
+        return;
+      }
+
       setIsLoading(true);
 
       try {
@@ -18,6 +22,8 @@ export default (url: string) => {
           body: data,
         });
 
+        setIsLoading(false);
+
         setResponse(result);
       } catch (e) {
         setError(e);
@@ -25,7 +31,7 @@ export default (url: string) => {
     };
 
     httpPost();
-  }, [setData]);
+  }, [data, setData]);
 
   return [setData, isLoading, response, error];
 };
