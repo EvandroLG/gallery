@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IPost } from '../interfaces/post';
 import { fromUtcToLocalTime, formatfromNow } from '../libs/date';
+import useProgressiveImage from '../hooks/useProgressiveImage';
 
 const Article = styled.article`
   margin-top: 40px;
@@ -31,24 +32,17 @@ const DescriptionWrapper = styled.div`
   padding-left: 15px;
 `;
 
-const Image = styled.img`
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  max-height: 600px;
-  object-fit: cover;
-  border-radius: 5px;
-`;
-
 const formatDate = (createdAt: string) => {
   const date = fromUtcToLocalTime(new Date(createdAt));
   return formatfromNow(date);
 };
 
 const Post: React.FC<IPost> = ({ image, description, createdAt }) => {
+  const [Fallback, Photo, isReady] = useProgressiveImage(image);
+
   return (
     <Article>
-      <Image src={image} alt={description} />
+      <Fallback>{isReady && <Photo src={image} alt={description} />}</Fallback>
 
       <DescriptionWrapper>
         {description && (

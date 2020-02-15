@@ -4,7 +4,7 @@
     "module": "es6",
     "target": "es5",
     "jsx": "react",
-    "strict": true,
+    "strict": false,
     "allowJs": true,
     "allowSyntheticDefaultImports": true
   }
