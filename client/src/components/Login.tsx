@@ -1,17 +1,17 @@
+import { History } from 'history';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { History } from 'history';
-import Container from '../styled/Container';
 import useForm, { Dict } from '../hooks/useForm';
 import { postWithRedirect } from '../libs/http';
+import Container from '../styled/Container';
 
 import {
+  StyledFieldError,
   StyledFormGroup,
+  StyledInput,
   StyledLabel,
   StyledSubmitButton,
-  StyledInput,
-  StyledFieldError,
 } from '../styled/Form';
 
 const SignupLink = styled(Link)`

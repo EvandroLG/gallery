@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import { History } from 'history';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { fetchAuthentication } from '../actions/user';
 
 const Private = ({

@@ -1,5 +1,5 @@
 export default {
   bgBody: '#fafafa',
-  defaultTextColor: '#000',
   defaultLinkColor: '#0366d6',
+  defaultTextColor: '#000',
 };

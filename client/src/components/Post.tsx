@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IPost } from '../interfaces/post';
-import { fromUtcToLocalTime, formatfromNow } from '../libs/date';
 import useProgressiveImage from '../hooks/useProgressiveImage';
+import { IPost } from '../interfaces/post';
+import { formatfromNow, fromUtcToLocalTime } from '../libs/date';
 
 const Article = styled.article`
   margin-top: 40px;

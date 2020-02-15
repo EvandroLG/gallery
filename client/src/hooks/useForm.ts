@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface Dict {
   [key: string]: string;
@@ -7,7 +7,7 @@ export interface Dict {
 export default (
   validation: (values: Dict) => any,
   submit: (values: Dict) => void,
-): Array<any> => {
+): any[] => {
   const [values, setValues] = useState<Dict>({});
   const [errors, setErrors] = useState<Dict>({});
 
