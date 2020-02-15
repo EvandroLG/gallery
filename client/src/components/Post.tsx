@@ -35,6 +35,9 @@ const Image = styled.img`
   display: block;
   margin: 0 auto;
   width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+  border-radius: 5px;
 `;
 
 const formatDate = (createdAt: string) => {
@@ -45,7 +48,7 @@ const formatDate = (createdAt: string) => {
 const Post: React.FC<IPost> = ({ image, description, createdAt }) => {
   return (
     <Article>
-      <Image src={image} alt={description} data-testid="image" />
+      <Image src={image} alt={description} />
 
       <DescriptionWrapper>
         {description && (
