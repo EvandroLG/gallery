@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { RefObject, useEffect } from 'react';
 import throttle from '../libs/throttle';
 
 export default (ref: RefObject<HTMLElement>, callback: () => void) => {

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IPost } from '../interfaces/post';
-import Post from './Post';
-import useScroll from '../hooks/useScroll';
-import { authorizationHeader, getJson } from '../libs/http';
 import API from '../configs/api';
 import statusCode from '../configs/status';
+import useScroll from '../hooks/useScroll';
+import { IPost } from '../interfaces/post';
+import { authorizationHeader, getJson } from '../libs/http';
+import Post from './Post';
 
 const Main = styled.main`
   width: 95%;
@@ -18,7 +18,7 @@ const Main = styled.main`
 
 export default function Timeline() {
   const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
-  const [posts, setPosts] = useState<Array<IPost>>([]);
+  const [posts, setPosts] = useState<IPost[]>([]);
   const [page, setPage] = useState<number>(1);
   const ref = useRef(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,7 +26,7 @@ export default function Timeline() {
   useScroll(ref, request);
 
   useEffect(() => {
-    (async function() {
+    (async () => {
       await memoizedRequest();
     })();
   }, [memoizedRequest]);

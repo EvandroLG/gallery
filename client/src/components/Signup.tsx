@@ -1,18 +1,18 @@
-import React from 'react';
-import { History } from 'history';
 import { isEmailValid, isPasswordValid } from '@evandrolg/react-form-helper';
+import { History } from 'history';
+import React from 'react';
 
-import Container from '../styled/Container';
-import { postWithRedirect } from '../libs/http';
+import { RouteComponentProps } from 'react-router-dom';
 import useForm, { Dict } from '../hooks/useForm';
+import { postWithRedirect } from '../libs/http';
+import Container from '../styled/Container';
 import {
+  StyledFieldError,
   StyledFormGroup,
+  StyledInput,
   StyledLabel,
   StyledSubmitButton,
-  StyledInput,
-  StyledFieldError,
 } from '../styled/Form';
-import { RouteComponentProps } from 'react-router-dom';
 
 const validation = ({ email, username, password }: Dict) => ({
   ...(!isEmailValid(email) && { email: 'E-mail is not valid' }),

@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import theme from '../configs/theme';
 
 const GlobalStyle = createGlobalStyle`
   html, body, h1, a, p,
@@ -11,18 +10,18 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    color: ${theme.DEFAULT_TEXT_COLOR};
+    color: ${props => props.theme.defaultTextColor};
     font-family: Helvetica, Arial, sans-serif;
     border: 0;
   }
 
   body {
-    background: ${theme.BG_BODY};
+    background: ${props => props.theme.bgBody};
   }
 
   a {
     text-decoration: none;
-    color: ${theme.DEFAULT_LINK_COLOR};
+    color: ${props => props.theme.defaultLinkColor};
   }
 `;
 

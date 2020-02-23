@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { get, authorizationHeader } from '../libs/http';
+import { useEffect, useState } from 'react';
+import { authorizationHeader, get } from '../libs/http';
 
 export default (url: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
