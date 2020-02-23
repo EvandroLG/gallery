@@ -3,7 +3,6 @@ import styled, { keyframes } from 'styled-components';
 
 const styles = `
   width: 100%;
-  height: 600px;
   border-radius: 5px;
 `;
 
@@ -19,13 +18,14 @@ const fadeIn = keyframes`
 
 const Photo = styled.img`
   ${styles}
-  object-fit: cover;
+  max-height: 600px;
+  object-fit: contain;
   animation: ${fadeIn} 1s;
 `;
 
 const Fallback = styled.div`
   ${styles}
-  background: #fafafa;
+  height: auto;
 `;
 
 export default (src: string) => {
