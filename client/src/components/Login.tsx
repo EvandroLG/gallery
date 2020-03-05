@@ -2,7 +2,7 @@ import { History } from 'history';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import useForm, { Dict } from '../hooks/useForm';
+import { useForm, IDict } from '@evandrolg/react-form-helper';
 import { postWithRedirect } from '../libs/http';
 import Container from '../styled/Container';
 
@@ -18,13 +18,13 @@ const SignupLink = styled(Link)`
   margin-left: 15px;
 `;
 
-const validation = ({ username, password }: Dict) => ({
+const validation = ({ username, password }: IDict) => ({
   ...(!username && { username: 'Username is required' }),
   ...(!password && { password: 'Password is required' }),
 });
 
 const login = (history: History) => {
-  return async ({ username, password }: Dict) => {
+  return async ({ username, password }: IDict) => {
     await postWithRedirect(
       '/api/signin',
       {

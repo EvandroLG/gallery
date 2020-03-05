@@ -1,9 +1,13 @@
-import { isEmailValid, isPasswordValid } from '@evandrolg/react-form-helper';
+import {
+  useForm,
+  IDict,
+  isEmailValid,
+  isPasswordValid,
+} from '@evandrolg/react-form-helper';
 import { History } from 'history';
 import React from 'react';
 
 import { RouteComponentProps } from 'react-router-dom';
-import useForm, { Dict } from '../hooks/useForm';
 import { postWithRedirect } from '../libs/http';
 import Container from '../styled/Container';
 import {
@@ -14,14 +18,14 @@ import {
   StyledSubmitButton,
 } from '../styled/Form';
 
-const validation = ({ email, username, password }: Dict) => ({
+const validation = ({ email, username, password }: IDict) => ({
   ...(!isEmailValid(email) && { email: 'E-mail is not valid' }),
   ...(!username && { username: 'Username is required' }),
   ...(!isPasswordValid(password) && { password: 'Password is not valid' }),
 });
 
 const submit = (history: History) => {
-  return async (data: Dict) => {
+  return async (data: IDict) => {
     await postWithRedirect('/api/signup', data, history);
   };
 };

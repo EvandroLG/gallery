@@ -11,8 +11,12 @@ import {
   StyledTextarea,
 } from '../styled/Form';
 
-import useForm, { Dict } from '../hooks/useForm';
+import { useForm } from '@evandrolg/react-form-helper';
 import useHttpPost from '../hooks/useHttpPost';
+
+export interface IDict {
+  [key: string]: string;
+}
 
 const Title = styled.h1`
   font-size: 25px;
@@ -21,7 +25,7 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const validation = ({ image }: Dict) => ({
+const validation = ({ image }: IDict) => ({
   ...(!image && { image: 'File is required' }),
 });
 
@@ -39,13 +43,16 @@ const NewPost: React.FC<RouteComponentProps> = ({ history }) => {
     }
   }, [response]);
 
-  async function newPost({ description }: Dict) {
+  async function newPost({ description }: IDict) {
     const formData = new FormData();
     const current = image?.current;
     const files = current?.files;
 
     formData.append('photo', (files || [])[0]);
-    description && formData.append('description', description);
+
+    if (description) {
+      formData.append('description', description);
+    }
 
     setData(formData);
   }
