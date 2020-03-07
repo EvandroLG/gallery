@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
       border: 0;
   }
 
+  input, textarea {
+    font-size: 16px;
+  }
+
   * {
     box-sizing: border-box;
     color: ${props => props.theme.defaultTextColor};

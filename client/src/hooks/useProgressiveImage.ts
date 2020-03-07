@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const styles = `
-  width: 100%;
   border-radius: 5px;
 `;
 
@@ -18,15 +17,14 @@ const fadeIn = keyframes`
 
 const Photo = styled.img`
   ${styles}
-  width: auto;
-  height: 600px;
+  max-width: 100%;
+  max-height: 600px;
   animation: ${fadeIn} 1s;
 `;
 
 const Fallback = styled.div`
   ${styles}
   text-align: center;
-  height: 600px;
 `;
 
 export default (src: string) => {
