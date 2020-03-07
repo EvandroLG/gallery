@@ -18,14 +18,15 @@ const fadeIn = keyframes`
 
 const Photo = styled.img`
   ${styles}
-  max-height: 600px;
-  object-fit: contain;
+  width: auto;
+  height: 600px;
   animation: ${fadeIn} 1s;
 `;
 
 const Fallback = styled.div`
   ${styles}
-  height: auto;
+  text-align: center;
+  height: 600px;
 `;
 
 export default (src: string) => {
