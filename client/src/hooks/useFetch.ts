@@ -1,30 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { authorizationHeader, get } from '../libs/http';
 
+const initialState = {
+  data: null,
+  error: null,
+  isLoading: false,
+};
+
+export const LOADING = 'LOADING';
+export const COMPLETE = 'COMPLETE';
+export const ERROR = 'ERROR';
+
+export const fetchReducer = (state, action) => {
+  if (action.type === LOADING) {
+    return {
+      ...initialState,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === COMPLETE) {
+    return {
+      ...initialState,
+      data: action.payload.result,
+    };
+  }
+
+  if (action.type === ERROR) {
+    return {
+      ...initialState,
+      error: action.payload.error,
+    };
+  }
+
+  return state;
+};
+
 export default (url: string) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Response | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
+      dispatch({ type: LOADING });
 
       try {
         const result = await get(url, {
           ...authorizationHeader,
         });
 
-        setData(result);
-      } catch (e) {
-        setError(e);
+        dispatch({
+          payload: { result },
+          type: COMPLETE,
+        });
+      } catch (error) {
+        dispatch({
+          payload: { error },
+          type: ERROR,
+        });
       }
-
-      setIsLoading(false);
     }
 
     fetchData();
   }, [url]);
 
-  return [isLoading, data, error];
+  return [state.isLoading, state.data, state.error];
 };
