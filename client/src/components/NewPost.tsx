@@ -12,7 +12,7 @@ import {
 } from '../styled/Form';
 
 import { useForm } from '@evandrolg/react-form-helper';
-import useHttpPost from '../hooks/useHttpPost';
+import usePost from '../hooks/usePost';
 
 export interface IDict {
   [key: string]: string;
@@ -31,7 +31,7 @@ const validation = ({ image }: IDict) => ({
 
 const NewPost: React.FC<RouteComponentProps> = ({ history }) => {
   const image = useRef<HTMLInputElement>(null);
-  const [setData, isLoading, response] = useHttpPost('/api/post');
+  const [setData, isLoading, response] = usePost('/api/post');
   const [getInputValue, handleChange, handleSubmit, errors] = useForm(
     validation,
     newPost,

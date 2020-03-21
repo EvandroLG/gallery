@@ -5,6 +5,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { ThemeProvider } from 'styled-components';
 import rootReducer from './reducers';
+import serviceWorker from './sw';
 
 import App from './components/App';
 import theme from './configs/theme';
@@ -19,3 +20,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
+
+serviceWorker();
