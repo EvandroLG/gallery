@@ -1,12 +1,20 @@
 export default () => {
   const version = 1;
 
-  const onInstall = () => console.log(`Service Worker (${version}) installed`);
-  const onActivate = () => console.log(`Service Worker (${version}) activated`);
+  const handleActivation = async () => {
+    await clients.claim();
+    console.log(`Service Worker (${version}) activated`);
+  };
+
   const main = async () =>
     console.log(`Service Worker (${version}) is starting...`);
 
-  self.addEventListener('install', onInstall);
-  self.addEventListener('activate', onActivate);
+  self.addEventListener('install', () => {
+    console.log(`Service Worker (${version}) installed`);
+    self.skipWaiting();
+  });
+
+  self.addEventListener('activate', e => e.waitUntil(handleActivation));
+
   main().catch(console.error);
 };
