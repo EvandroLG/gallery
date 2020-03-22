@@ -1,4 +1,7 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+
+const dist = path.resolve(__dirname, 'dist');
 
 module.exports = {
   entry: './src/Index.tsx',
@@ -19,6 +22,10 @@ module.exports = {
 
   output: {
     filename: 'static/bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: dist,
   },
+
+  plugins: [
+    new CopyPlugin([{ from: 'src/sw.js', to: `${dist}/static/sw.js` }]),
+  ],
 };

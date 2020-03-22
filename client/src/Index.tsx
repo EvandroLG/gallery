@@ -25,9 +25,12 @@ const initServiceWorker = async () => {
     return;
   }
 
-  const registration = await navigator.serviceWorker.register('./sw.js', {
-    updateViaCache: 'none',
-  });
+  const registration = await navigator.serviceWorker.register(
+    './static/sw.js',
+    {
+      updateViaCache: 'none',
+    },
+  );
 
   let worker =
     registration.installing || registration.waiting || registration.active;
