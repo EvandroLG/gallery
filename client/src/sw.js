@@ -11,10 +11,10 @@ const cacheFiles = async (shouldReload = false) => {
   const cache = await caches.open(cacheName);
   const requestFile = async url => {
     if (!shouldReload) {
-      const response = await cache.match(url);
+      const cached = await cache.match(url);
 
-      if (response) {
-        return response;
+      if (cached) {
+        return cached;
       }
 
       const response = await fetch(url, fetchOptions);
@@ -49,9 +49,9 @@ const router = async req => {
     return response;
   }
 
-  const response = await cache.match(req.url);
+  const cached = await cache.match(req.url);
 
-  return response && response.clone();
+  return cached && cached.clone();
 };
 
 const main = async () => await cacheFiles();
