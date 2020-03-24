@@ -46,6 +46,7 @@ const router = async req => {
 
     const response = await fetch(url, options);
     await cache.put(req.url, response.clone());
+
     return response;
   }
 
@@ -56,12 +57,19 @@ const router = async req => {
 
 const main = async () => await cacheFiles();
 
+self.addEventListener('fetch', async ({ request, respondWith }) => {
+  if (request.method !== 'GET') {
+    return;
+  }
+
+  respondWith(await router(request));
+});
+
 self.addEventListener('install', () => {
   console.log(`Service Worker (${version}) installed`);
   self.skipWaiting();
 });
 
 self.addEventListener('activate', e => e.waitUntil(handleActivation));
-self.addEventListener('fetch', e => e.respondWith(router(e.request)));
 
 main().catch(console.error);
