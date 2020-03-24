@@ -1,19 +1,10 @@
 const version = 1;
 const cacheName = `gallery-${version}`;
 const urlsToCache = ['/', '/static/bundle.js'];
-
-const request = async (url, cache) => {
-  const options = {
-    method: 'GET',
-    cache: 'no-cache',
-    credentials: 'omit',
-  };
-
-  const response = await fetch(url, options);
-
-  if (response.ok) {
-    await cache.put(url, response);
-  }
+const fetchOptions = {
+  method: 'GET',
+  cache: 'no-cache',
+  credentials: 'omit',
 };
 
 const cacheFiles = async (shouldReload = false) => {
@@ -26,7 +17,11 @@ const cacheFiles = async (shouldReload = false) => {
         return response;
       }
 
-      await request(url, cache);
+      const response = await fetch(url, fetchOptions);
+
+      if (response && response.ok) {
+        await cache.put(url, response);
+      }
     }
   };
 
@@ -38,6 +33,27 @@ const handleActivation = async () => {
   await cacheFiles(true);
 };
 
+const router = async req => {
+  const url = new URL(req.url);
+  const cache = await caches.open(cacheName);
+
+  if (url.origin === location.origin) {
+    const options = {
+      ...fetchOptions,
+      headers: req.headers,
+      cache: 'no-store',
+    };
+
+    const response = await fetch(url, options);
+    await cache.put(req.url, response.clone());
+    return response;
+  }
+
+  const response = await cache.match(req.url);
+
+  return response && response.clone();
+};
+
 const main = async () => await cacheFiles();
 
 self.addEventListener('install', () => {
@@ -46,5 +62,6 @@ self.addEventListener('install', () => {
 });
 
 self.addEventListener('activate', e => e.waitUntil(handleActivation));
+self.addEventListener('fetch', e => e.respondWith(router(e.request)));
 
 main().catch(console.error);
