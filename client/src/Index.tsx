@@ -20,25 +20,13 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-const initServiceWorker = async () => {
-  if (!('serviceWorker' in navigator)) {
-    return;
-  }
-
-  const registration = await navigator.serviceWorker.register(
-    './static/sw.js',
-    {
-      updateViaCache: 'none',
-    },
-  );
-
-  let worker =
-    registration.installing || registration.waiting || registration.active;
-
-  navigator.serviceWorker.addEventListener(
-    'controllerchange',
-    () => (worker = navigator.serviceWorker.controller),
-  );
-};
-
-initServiceWorker().catch(console.error);
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('./sw.js');
+      console.log(`ServiceWorker is running with scope ${registration.scope}`);
+    } catch (err) {
+      console.log(`ServiceWorker registration failed: ${err}`);
+    }
+  });
+}

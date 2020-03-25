@@ -25,7 +25,5 @@ module.exports = {
     path: dist,
   },
 
-  plugins: [
-    new CopyPlugin([{ from: 'src/sw.js', to: `${dist}/static/sw.js` }]),
-  ],
+  plugins: [new CopyPlugin([{ from: 'src/sw.js', to: `${dist}/sw.js` }])],
 };
