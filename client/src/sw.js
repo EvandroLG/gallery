@@ -34,35 +34,35 @@ const handleActivation = async () => {
 };
 
 const router = async req => {
-  const url = new URL(req.url);
   const cache = await caches.open(cacheName);
-
-  if (url.origin === location.origin) {
-    const options = {
-      ...fetchOptions,
-      headers: req.headers,
-      cache: 'no-store',
-    };
-
-    const response = await fetch(url, options);
-    await cache.put(req.url, response.clone());
-
-    return response;
-  }
-
   const cached = await cache.match(req.url);
 
-  return cached && cached.clone();
+  if (cached) {
+    return cached.clone();
+  }
+
+  const url = new URL(req.url);
+
+  const options = {
+    ...fetchOptions,
+    headers: req.headers,
+    cache: 'no-store',
+  };
+
+  const response = await fetch(url, options);
+  await cache.put(req.url, response.clone());
+
+  return response;
 };
 
 const main = async () => await cacheFiles();
 
-self.addEventListener('fetch', async ({ request, respondWith }) => {
-  if (request.method !== 'GET') {
+self.addEventListener('fetch', e => {
+  if (!e.request.url.includes('http') || e.request.method !== 'GET') {
     return;
   }
 
-  respondWith(await router(request));
+  e.respondWith(router(e.request));
 });
 
 self.addEventListener('install', () => {

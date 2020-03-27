@@ -16,7 +16,11 @@ app.use(express.static(dist));
 app.use(express.static(uploads));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(dist, 'index.html'));
+  res.sendFile(path.join(dist, 'index.html'));
+});
+
+app.get('/sw.js', (req, res) => {
+  res.sendFile(path.join(dist, 'sw.js'));
 });
 
 app.listen(port);
