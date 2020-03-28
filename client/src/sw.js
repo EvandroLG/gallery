@@ -1,37 +1,5 @@
 const version = 1;
-const cacheName = `gallery-${version}`;
-const urlsToCache = ['/', '/static/bundle.js'];
-const fetchOptions = {
-  method: 'GET',
-  cache: 'no-cache',
-  credentials: 'omit',
-};
-
-const cacheFiles = async (shouldReload = false) => {
-  const cache = await caches.open(cacheName);
-  const requestFile = async url => {
-    if (!shouldReload) {
-      const cached = await cache.match(url);
-
-      if (cached) {
-        return cached;
-      }
-
-      const response = await fetch(url, fetchOptions);
-
-      if (response && response.ok) {
-        await cache.put(url, response);
-      }
-    }
-  };
-
-  return Promise.all(urlsToCache.map(requestFile));
-};
-
-const handleActivation = async () => {
-  await clients.claim();
-  await cacheFiles(true);
-};
+const cacheName = `gallery-v${version}`;
 
 const router = async req => {
   const cache = await caches.open(cacheName);
@@ -43,33 +11,38 @@ const router = async req => {
 
   const url = new URL(req.url);
 
-  const options = {
-    ...fetchOptions,
+  const fetchOptions = {
+    method: 'GET',
+    credentials: 'omit',
     headers: req.headers,
     cache: 'no-store',
   };
 
-  const response = await fetch(url, options);
+  const response = await fetch(url, fetchOptions);
   await cache.put(req.url, response.clone());
 
   return response;
 };
 
-const main = async () => await cacheFiles();
+self.addEventListener('install', e => {
+  const cacheFiles = async () => {
+    const urlsToCache = ['/', '/static/bundle.js'];
+    const cache = await caches.open(cacheName);
+
+    return cache.addAll(urlsToCache);
+  };
+
+  e.waitUntil(cacheFiles());
+});
+
+self.addEventListener('activate', e => e.waitUntil(clients.claim()));
 
 self.addEventListener('fetch', e => {
-  if (!e.request.url.includes('http') || e.request.method !== 'GET') {
+  const { request } = e;
+
+  if (!request.url.includes('http') || request.method !== 'GET') {
     return;
   }
 
-  e.respondWith(router(e.request));
+  e.respondWith(router(request));
 });
-
-self.addEventListener('install', () => {
-  console.log(`Service Worker (${version}) installed`);
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', e => e.waitUntil(handleActivation));
-
-main().catch(console.error);
