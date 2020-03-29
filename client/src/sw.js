@@ -1,7 +1,7 @@
-const version = 1;
+const version = 2;
 const cacheName = `gallery-v${version}`;
 
-const request = async ({ url, headers }) => {
+const makeRequest = async ({ url, headers }) => {
   const fetchOptions = {
     method: 'GET',
     credentials: 'omit',
@@ -35,13 +35,13 @@ const router = async req => {
   }
 
   if (req.url.includes('/api/')) {
-    const response = await request(req);
+    const response = await makeRequest(req);
     return response ? response : getFromCache(req.url);
   }
 
   const cached = await getFromCache(req.url);
 
-  return cached ? cached : request(req);
+  return cached ? cached : makeRequest(req);
 };
 
 self.addEventListener('install', e => {
@@ -55,7 +55,16 @@ self.addEventListener('install', e => {
   e.waitUntil(cacheFiles());
 });
 
-self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+self.addEventListener('activate', e => {
+  const cleanCache = async () => {
+    const keys = await caches.keys();
+    return Promise.all(
+      keys.filter(key => key !== cacheName).map(key => caches.delete(key)),
+    );
+  };
+
+  e.waitUntil(cleanCache());
+});
 
 self.addEventListener('fetch', e => {
   const { request } = e;
